@@ -95,16 +95,22 @@
 @Scripts.Render("~/bundles/jquery")
 <script type="text/javascript">
     $("#ddlPais").change(function () {
+        $("#ddlEstado").empty();
         $.ajax({
             url: "http://localhost:56970/Usuario/EstadoGetByIdPais", //direccion donde hara la peticion
             type: "GET", //verbo del controlador
             dataType: "json", //formato para la información
             data: { IdPais: $("#ddlPais").val() }, //los datos que necesitemos enviar
-            success: function (data) {
-                //si salio bien aqui lo manejo
+            success: function (result) {
+                $("#ddlEstado").append('<option value="0">' + 'Seleccione una opción' + '</option>');
+                $.each(result, function (i, result) {
+                    $("#ddlEstado").append('<option value="'
+                        + result.IdEstado + '">'
+                        + result.Nombre + '</option>');
+                });
             },
             error: function (error) {
-                //si salio aqui lo manejo
+                alert('Ocurrio un error la consultar los estados del pais');
             }
         });
 

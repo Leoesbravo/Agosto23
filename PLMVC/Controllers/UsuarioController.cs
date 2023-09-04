@@ -93,7 +93,7 @@ namespace PLMVC.Controllers
         public JsonResult EstadoGetByIdPais(int IdPais)
         {
             ML.Result result = BL.Estado.GetByIdPais(IdPais);
-            return Json(result.Objects);
+            return Json(result.Objects, JsonRequestBehavior.AllowGet);
         }
     }
 }
