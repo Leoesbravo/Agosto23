@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="004f9125f9af48b1bec64014bf8d4723" Name="Diagram1">
+        <EntityTypeShape EntityType="LEscogidoProgramacionNCapasAgosto2023Model.Rol" Width="1.5" PointX="0.75" PointY="1.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="LEscogidoProgramacionNCapasAgosto2023Model.Colonia" Width="1.5" PointX="7.5" PointY="5" />
+        <EntityTypeShape EntityType="LEscogidoProgramacionNCapasAgosto2023Model.Estado" Width="1.5" PointX="3" PointY="4.875" />
+        <EntityTypeShape EntityType="LEscogidoProgramacionNCapasAgosto2023Model.Municipio" Width="1.5" PointX="5.25" PointY="4.875" />
+        <EntityTypeShape EntityType="LEscogidoProgramacionNCapasAgosto2023Model.Pai" Width="1.5" PointX="0.75" PointY="5.125" />
+        <AssociationConnector Association="LEscogidoProgramacionNCapasAgosto2023Model.FK__Colonia__IdMunic__403A8C7D" />
+        <AssociationConnector Association="LEscogidoProgramacionNCapasAgosto2023Model.FK__Estado__IdPais__3A81B327" />
+        <AssociationConnector Association="LEscogidoProgramacionNCapasAgosto2023Model.FK__Municipio__IdEst__3D5E1FD2" />
+        <EntityTypeShape EntityType="LEscogidoProgramacionNCapasAgosto2023Model.Usuario" Width="1.5" PointX="3" PointY="0.875" />
+        <AssociationConnector Association="LEscogidoProgramacionNCapasAgosto2023Model.FK__Usuario__IdRol__286302EC" />
+        <EntityTypeShape EntityType="LEscogidoProgramacionNCapasAgosto2023Model.Direccion" Width="1.5" PointX="6.375" PointY="1.75" />
+        <AssociationConnector Association="LEscogidoProgramacionNCapasAgosto2023Model.FK__Direccion__IdCol__48CFD27E" />
+        <AssociationConnector Association="LEscogidoProgramacionNCapasAgosto2023Model.FK__Direccion__IdUsu__47DBAE45" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

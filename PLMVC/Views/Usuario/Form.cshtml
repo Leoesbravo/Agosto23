@@ -1,0 +1,113 @@
+﻿@model ML.Usuario
+@{
+    ViewBag.Title = "Form";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="container">
+    <h2 class="text-center">Formulario de Usuarios</h2>
+    <h5>Ingrese la información del nuevo usuario</h5>
+    <hr />
+
+
+    @using (Html.BeginForm("Form", "Usuario", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        <div class="row">
+            <div class="col-md-3">
+                @Html.LabelFor(model => model.Nombre)
+                <div class="input-group mb-3">
+                    <span class="input-group-text" id="basic-addon1"><i class="fa-solid fa-user fa-lg"></i></span>
+                    @Html.TextBoxFor(model => model.Nombre, new { @class = "form-control" })
+                </div>
+
+            </div>
+            <div class="col-md-3">
+                @Html.LabelFor(model => model.ApellidoPaterno)
+                <div class="input-group mb-3">
+                    <span class="input-group-text" id="basic-addon1"><i class="fa-solid fa-user fa-lg"></i></span>
+                    @Html.TextBoxFor(model => model.ApellidoPaterno, new { @class = "form-control" })
+                </div>
+
+
+            </div>
+            <div class="col-md-3">
+                @Html.LabelFor(model => model.ApellidoMaterno)
+                <div class="input-group mb-3">
+                    <span class="input-group-text" id="basic-addon1"><i class="fa-solid fa-user fa-lg"></i></span>
+                    @Html.TextBoxFor(model => model.ApellidoMaterno, new { @class = "form-control" })
+                </div>
+            </div>
+            <div class="col-md-3">
+                @Html.LabelFor(model => model.FechaNacimiento)
+                <div class="input-group mb-3">
+                    <span class="input-group-text" id="basic-addon1"><i class="fa-solid fa-user fa-lg"></i></span>
+                    @Html.TextBoxFor(model => model.FechaNacimiento, new { @class = "form-control", @placeholder = "dd-MM-YYYY", @type = "date" })
+                </div>
+            </div>
+        </div>
+        <div class=" row">
+            <div class="col-md-3">
+                @Html.Label("Calle")
+                <div class="input-group mb-3">
+                    <span class="input-group-text" id="basic-addon1"><i class="fa-solid fa-user fa-lg"></i></span>
+                    @Html.TextBoxFor(model => model.Direccion, new { @class = "form-control" })
+                </div>
+            </div>
+            <div class="col-md-3">
+                @Html.LabelFor(model => model.Rol.IdRol)
+                <div class="input-group mb-3">
+                    <span class="input-group-text" id="basic-addon1"><i class="fa-solid fa-user fa-lg"></i></span>
+                    @Html.DropDownListFor(model => model.Rol.IdRol, new SelectList(Model.Rol.Roles, "IdRol", "Nombre"), "Selecciona un rol ", new { @class = "form-control" })
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-3">
+                @Html.LabelFor(model => model.Direccion.Estado.Pais.IdPais)
+                <div class="input-group mb-3">
+                    <span class="input-group-text" id="basic-addon1"><i class="fa-solid fa-flag"></i></span>
+                    @Html.DropDownListFor(model => model.Direccion.Estado.Pais.IdPais, new SelectList(Model.Direccion.Estado.Pais.Paises, "IdPais", "Nombre"), "Selecciona un Pais ", new { @class = "form-control", @id = "ddlPais" })
+                </div>
+            </div>
+            <div class="col-md-3">
+                @Html.LabelFor(model => model.Direccion.Estado.IdEstado)
+                <div class="input-group mb-3">
+                    <span class="input-group-text" id="basic-addon1"><i class="fa-solid fa-flag"></i></span>
+                    @if (Model.Direccion.Estado.Estados == null)
+                    {
+                        @Html.DropDownListFor(model => model.Direccion.Estado.IdEstado, new SelectList(String.Empty), "Selecciona un Pais primero ", new { @class = "form-control", @id = "ddlEstado" })
+                    }
+                    else
+                    {
+                        @Html.DropDownListFor(model => model.Direccion.Estado.IdEstado, new SelectList(Model.Direccion.Estado.Estados, "IdEstado", "Nombre"), "Selecciona un Estado ", new { @class = "form-control", @id = "ddlEstado" })
+
+                    }
+                </div>
+            </div>
+        </div>
+        <div class="text-center">
+            <button class="btn btn-success" type="submit"><i class="fa-solid fa-floppy-disk"></i> Guardar</button>
+            <a class="btn btn-danger" href="@Url.Action("GetAll", "Usuario")"><i class="fa-solid fa-right-from-bracket"></i> Volver</a>
+        </div>
+
+    }
+
+</div>
+@Scripts.Render("~/bundles/jquery")
+<script type="text/javascript">
+    $("#ddlPais").change(function () {
+        $.ajax({
+            url: "http://localhost:56970/Usuario/EstadoGetByIdPais", //direccion donde hara la peticion
+            type: "GET", //verbo del controlador
+            dataType: "json", //formato para la información
+            data: { IdPais: $("#ddlPais").val() }, //los datos que necesitemos enviar
+            success: function (data) {
+                //si salio bien aqui lo manejo
+            },
+            error: function (error) {
+                //si salio aqui lo manejo
+            }
+        });
+
+    });
+
+</script>
