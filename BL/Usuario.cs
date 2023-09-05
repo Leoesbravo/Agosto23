@@ -234,7 +234,7 @@ namespace BL
             {
                 using (DLEF.LEscogidoProgramacionNCapasAgosto2023Entities context = new DLEF.LEscogidoProgramacionNCapasAgosto2023Entities())
                 {
-                    var query = context.UsuarioAdd(usuario.Nombre, usuario.ApellidoPaterno, usuario.FechaNacimiento, usuario.Rol.IdRol);
+                    var query = context.UsuarioAdd(usuario.Nombre, usuario.ApellidoPaterno, usuario.FechaNacimiento, usuario.Rol.IdRol, usuario.Direccion.Calle, usuario.Direccion.NumeroExterior);
                     if (query > 0)
                     {
                         result.Correct = true;

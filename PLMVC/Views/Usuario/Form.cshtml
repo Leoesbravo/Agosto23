@@ -11,6 +11,7 @@
 
     @using (Html.BeginForm("Form", "Usuario", FormMethod.Post, new { enctype = "multipart/form-data" }))
     {
+        @Html.HiddenFor(model => model.IdUsuario)
         <div class="row">
             <div class="col-md-3">
                 @Html.LabelFor(model => model.Nombre)
@@ -33,7 +34,7 @@
                 @Html.LabelFor(model => model.ApellidoMaterno)
                 <div class="input-group mb-3">
                     <span class="input-group-text" id="basic-addon1"><i class="fa-solid fa-user fa-lg"></i></span>
-                    @Html.TextBoxFor(model => model.ApellidoMaterno, new { @class = "form-control" })
+                    @Html.TextBoxFor(model => model.ApellidoMaterno, new { @class = "form-control"})
                 </div>
             </div>
             <div class="col-md-3">
@@ -44,15 +45,8 @@
                 </div>
             </div>
         </div>
-        <div class=" row">
-            <div class="col-md-3">
-                @Html.Label("Calle")
-                <div class="input-group mb-3">
-                    <span class="input-group-text" id="basic-addon1"><i class="fa-solid fa-user fa-lg"></i></span>
-                    @Html.TextBoxFor(model => model.Direccion, new { @class = "form-control" })
-                </div>
-            </div>
-            <div class="col-md-3">
+        <div class="row">
+            <div class="col-md-4">
                 @Html.LabelFor(model => model.Rol.IdRol)
                 <div class="input-group mb-3">
                     <span class="input-group-text" id="basic-addon1"><i class="fa-solid fa-user fa-lg"></i></span>
@@ -60,16 +54,18 @@
                 </div>
             </div>
         </div>
+        <h4 class="text-center">Información de la dirección</h4>
+        <hr />
         <div class="row">
             <div class="col-md-3">
-                @Html.LabelFor(model => model.Direccion.Estado.Pais.IdPais)
+                @Html.LabelFor(model => model.Direccion.Estado.Pais)
                 <div class="input-group mb-3">
                     <span class="input-group-text" id="basic-addon1"><i class="fa-solid fa-flag"></i></span>
                     @Html.DropDownListFor(model => model.Direccion.Estado.Pais.IdPais, new SelectList(Model.Direccion.Estado.Pais.Paises, "IdPais", "Nombre"), "Selecciona un Pais ", new { @class = "form-control", @id = "ddlPais" })
                 </div>
             </div>
             <div class="col-md-3">
-                @Html.LabelFor(model => model.Direccion.Estado.IdEstado)
+                @Html.LabelFor(model => model.Direccion.Estado)
                 <div class="input-group mb-3">
                     <span class="input-group-text" id="basic-addon1"><i class="fa-solid fa-flag"></i></span>
                     @if (Model.Direccion.Estado.Estados == null)
@@ -83,10 +79,24 @@
                     }
                 </div>
             </div>
+            <div class="col-md-4">
+                @Html.LabelFor(model => model.Direccion.Calle)
+                <div class="input-group mb-3">
+                    <span class="input-group-text" id="basic-addon1"><i class="fa-solid fa-location-dot"></i></span>
+                    @Html.TextBoxFor(model => model.Direccion.Calle, new { @class = "form-control" })
+                </div>
+            </div>
+            <div class="col-md-2">
+                @Html.LabelFor(model => model.Direccion.NumeroExterior)
+                <div class="input-group mb-3">
+                    <span class="input-group-text" id="basic-addon1"><i class="fa-solid fa-hashtag"></i></span>
+                    @Html.TextBoxFor(model => model.Direccion.NumeroExterior, new { @class = "form-control" })
+                </div>
+            </div>
         </div>
         <div class="text-center">
-            <button class="btn btn-success" type="submit"><i class="fa-solid fa-floppy-disk"></i> Guardar</button>
-            <a class="btn btn-danger" href="@Url.Action("GetAll", "Usuario")"><i class="fa-solid fa-right-from-bracket"></i> Volver</a>
+            <button id="btnGuardar" class="btn btn-success" type="submit"><i class="fa-solid fa-floppy-disk"></i> Guardar</button>
+            <a id="btnCancelar" onmouseover="CambiarColor()" class="btn btn-danger"  href="@Url.Action("GetAll", "Usuario")"><i class="fa-solid fa-right-from-bracket"></i> Volver</a>
         </div>
 
     }
@@ -115,5 +125,12 @@
         });
 
     });
-
+    $("#btnGuardar").mouseenter(function () {
+        $("#btnGuardar").addClass("fa-beat").mouseout(function () {
+            $("#btnGuardar").removeClass("fa-beat")
+        })
+    })
+    function CambiarColor() {
+        $("#btnCancelar").toggleClass("btn-danger btn-secondary")
+    }
 </script>
