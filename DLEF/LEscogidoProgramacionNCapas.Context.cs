@@ -32,8 +32,8 @@ namespace DLEF
         public virtual DbSet<Estado> Estadoes { get; set; }
         public virtual DbSet<Municipio> Municipios { get; set; }
         public virtual DbSet<Pai> Pais { get; set; }
-        public virtual DbSet<Usuario> Usuarios { get; set; }
         public virtual DbSet<Direccion> Direccions { get; set; }
+        public virtual DbSet<Usuario> Usuarios { get; set; }
     
         public virtual ObjectResult<RolGetAll_Result> RolGetAll()
         {
@@ -63,7 +63,12 @@ namespace DLEF
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<PaisGetAll_Result>("PaisGetAll");
         }
     
-        public virtual int UsuarioAdd(string nombre, string apellidoPaterno, Nullable<System.DateTime> fechaNacimiento, Nullable<int> idRol, string calle, string numeroExterior)
+        public virtual ObjectResult<UsuarioGetAll_Result> UsuarioGetAll()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<UsuarioGetAll_Result>("UsuarioGetAll");
+        }
+    
+        public virtual int UsuarioAdd(string nombre, string apellidoPaterno, Nullable<System.DateTime> fechaNacimiento, Nullable<int> idRol, string calle, string numeroExterior, ObjectParameter filasAfectadas, ObjectParameter mensaje, string imagen)
         {
             var nombreParameter = nombre != null ?
                 new ObjectParameter("Nombre", nombre) :
@@ -89,12 +94,11 @@ namespace DLEF
                 new ObjectParameter("NumeroExterior", numeroExterior) :
                 new ObjectParameter("NumeroExterior", typeof(string));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("UsuarioAdd", nombreParameter, apellidoPaternoParameter, fechaNacimientoParameter, idRolParameter, calleParameter, numeroExteriorParameter);
-        }
+            var imagenParameter = imagen != null ?
+                new ObjectParameter("Imagen", imagen) :
+                new ObjectParameter("Imagen", typeof(string));
     
-        public virtual ObjectResult<UsuarioGetAll_Result> UsuarioGetAll()
-        {
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<UsuarioGetAll_Result>("UsuarioGetAll");
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("UsuarioAdd", nombreParameter, apellidoPaternoParameter, fechaNacimientoParameter, idRolParameter, calleParameter, numeroExteriorParameter, filasAfectadas, mensaje, imagenParameter);
         }
     }
 }

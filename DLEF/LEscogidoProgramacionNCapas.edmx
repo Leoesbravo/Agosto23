@@ -64,6 +64,7 @@
           <Property Name="ApellidoMaterno" Type="varchar" MaxLength="50" />
           <Property Name="FechaNacimiento" Type="date" Nullable="false" />
           <Property Name="IdRol" Type="int" />
+          <Property Name="Imagen" Type="varchar(max)" />
         </EntityType>
         <Association Name="FK__Colonia__IdMunic__403A8C7D">
           <End Role="Municipio" Type="Self.Municipio" Multiplicity="0..1" />
@@ -149,6 +150,9 @@
           <Parameter Name="IdRol" Type="int" Mode="In" />
           <Parameter Name="Calle" Type="varchar" Mode="In" />
           <Parameter Name="NumeroExterior" Type="varchar" Mode="In" />
+          <Parameter Name="FilasAfectadas" Type="int" Mode="InOut" />
+          <Parameter Name="Mensaje" Type="varchar" Mode="InOut" />
+          <Parameter Name="Imagen" Type="varchar(max)" Mode="In" />
         </Function>
         <Function Name="UsuarioGetAll" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="UsuarioGetById" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
@@ -225,19 +229,20 @@
           <Parameter Name="IdPais" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="PaisGetAll" ReturnType="Collection(LEscogidoProgramacionNCapasAgosto2023Model.PaisGetAll_Result)" />
-          <EntitySet Name="Usuarios" EntityType="LEscogidoProgramacionNCapasAgosto2023Model.Usuario" />
-          <AssociationSet Name="FK__Usuario__IdRol__286302EC" Association="LEscogidoProgramacionNCapasAgosto2023Model.FK__Usuario__IdRol__286302EC">
-            <End Role="Rol" EntitySet="Rols" />
-            <End Role="Usuario" EntitySet="Usuarios" />
-          </AssociationSet>
           <EntitySet Name="Direccions" EntityType="LEscogidoProgramacionNCapasAgosto2023Model.Direccion" />
           <AssociationSet Name="FK__Direccion__IdCol__48CFD27E" Association="LEscogidoProgramacionNCapasAgosto2023Model.FK__Direccion__IdCol__48CFD27E">
             <End Role="Colonia" EntitySet="Colonias" />
             <End Role="Direccion" EntitySet="Direccions" />
           </AssociationSet>
+          <FunctionImport Name="UsuarioGetAll" ReturnType="Collection(LEscogidoProgramacionNCapasAgosto2023Model.UsuarioGetAll_Result)" />
+          <EntitySet Name="Usuarios" EntityType="LEscogidoProgramacionNCapasAgosto2023Model.Usuario" />
           <AssociationSet Name="FK__Direccion__IdUsu__47DBAE45" Association="LEscogidoProgramacionNCapasAgosto2023Model.FK__Direccion__IdUsu__47DBAE45">
             <End Role="Usuario" EntitySet="Usuarios" />
             <End Role="Direccion" EntitySet="Direccions" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Usuario__IdRol__286302EC" Association="LEscogidoProgramacionNCapasAgosto2023Model.FK__Usuario__IdRol__286302EC">
+            <End Role="Rol" EntitySet="Rols" />
+            <End Role="Usuario" EntitySet="Usuarios" />
           </AssociationSet>
           <FunctionImport Name="UsuarioAdd">
             <Parameter Name="Nombre" Mode="In" Type="String" />
@@ -246,8 +251,10 @@
             <Parameter Name="IdRol" Mode="In" Type="Int32" />
             <Parameter Name="Calle" Mode="In" Type="String" />
             <Parameter Name="NumeroExterior" Mode="In" Type="String" />
+            <Parameter Name="FilasAfectadas" Mode="InOut" Type="Int32" />
+            <Parameter Name="Mensaje" Mode="InOut" Type="String" />
+            <Parameter Name="Imagen" Mode="In" Type="String" />
           </FunctionImport>
-          <FunctionImport Name="UsuarioGetAll" ReturnType="Collection(LEscogidoProgramacionNCapasAgosto2023Model.UsuarioGetAll_Result)" />
         </EntityContainer>
         <ComplexType Name="RolGetAll_Result">
           <Property Type="Int32" Name="IdRol" Nullable="false" />
@@ -343,31 +350,6 @@
           <Property Type="Int32" Name="IdPais" Nullable="false" />
           <Property Type="String" Name="Nombre" Nullable="true" MaxLength="50" />
         </ComplexType>
-        <EntityType Name="Usuario">
-          <Key>
-            <PropertyRef Name="IdUsuario" />
-          </Key>
-          <Property Name="IdUsuario" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Nombre" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="ApellidoPaterno" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="ApellidoMaterno" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="FechaNacimiento" Type="DateTime" Nullable="false" Precision="0" />
-          <Property Name="IdRol" Type="Int32" />
-          <NavigationProperty Name="Rol" Relationship="LEscogidoProgramacionNCapasAgosto2023Model.FK__Usuario__IdRol__286302EC" FromRole="Usuario" ToRole="Rol" />
-          <NavigationProperty Name="Direccions" Relationship="LEscogidoProgramacionNCapasAgosto2023Model.FK__Direccion__IdUsu__47DBAE45" FromRole="Usuario" ToRole="Direccion" />
-        </EntityType>
-        <Association Name="FK__Usuario__IdRol__286302EC">
-          <End Type="LEscogidoProgramacionNCapasAgosto2023Model.Rol" Role="Rol" Multiplicity="0..1" />
-          <End Type="LEscogidoProgramacionNCapasAgosto2023Model.Usuario" Role="Usuario" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Rol">
-              <PropertyRef Name="IdRol" />
-            </Principal>
-            <Dependent Role="Usuario">
-              <PropertyRef Name="IdRol" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EntityType Name="Direccion">
           <Key>
             <PropertyRef Name="IdDireccion" />
@@ -393,6 +375,29 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <ComplexType Name="UsuarioGetAll_Result">
+          <Property Type="Int32" Name="IdUsuario" Nullable="false" />
+          <Property Type="String" Name="Nombre" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="ApellidoPaterno" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="ApellidoMaterno" Nullable="true" MaxLength="50" />
+          <Property Type="DateTime" Name="FechaNacimiento" Nullable="false" />
+          <Property Type="Int32" Name="IdRol" Nullable="false" />
+          <Property Type="String" Name="NombreRol" Nullable="false" MaxLength="50" />
+        </ComplexType>
+        <EntityType Name="Usuario">
+          <Key>
+            <PropertyRef Name="IdUsuario" />
+          </Key>
+          <Property Name="IdUsuario" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nombre" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ApellidoPaterno" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ApellidoMaterno" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="FechaNacimiento" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="IdRol" Type="Int32" />
+          <Property Name="Imagen" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Direccions" Relationship="LEscogidoProgramacionNCapasAgosto2023Model.FK__Direccion__IdUsu__47DBAE45" FromRole="Usuario" ToRole="Direccion" />
+          <NavigationProperty Name="Rol" Relationship="LEscogidoProgramacionNCapasAgosto2023Model.FK__Usuario__IdRol__286302EC" FromRole="Usuario" ToRole="Rol" />
+        </EntityType>
         <Association Name="FK__Direccion__IdUsu__47DBAE45">
           <End Type="LEscogidoProgramacionNCapasAgosto2023Model.Usuario" Role="Usuario" Multiplicity="0..1" />
           <End Type="LEscogidoProgramacionNCapasAgosto2023Model.Direccion" Role="Direccion" Multiplicity="*" />
@@ -405,15 +410,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <ComplexType Name="UsuarioGetAll_Result">
-          <Property Type="Int32" Name="IdUsuario" Nullable="false" />
-          <Property Type="String" Name="Nombre" Nullable="false" MaxLength="50" />
-          <Property Type="String" Name="ApellidoPaterno" Nullable="false" MaxLength="50" />
-          <Property Type="String" Name="ApellidoMaterno" Nullable="true" MaxLength="50" />
-          <Property Type="DateTime" Name="FechaNacimiento" Nullable="false" />
-          <Property Type="Int32" Name="IdRol" Nullable="false" />
-          <Property Type="String" Name="NombreRol" Nullable="false" MaxLength="50" />
-        </ComplexType>
+        <Association Name="FK__Usuario__IdRol__286302EC">
+          <End Type="LEscogidoProgramacionNCapasAgosto2023Model.Rol" Role="Rol" Multiplicity="0..1" />
+          <End Type="LEscogidoProgramacionNCapasAgosto2023Model.Usuario" Role="Usuario" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Rol">
+              <PropertyRef Name="IdRol" />
+            </Principal>
+            <Dependent Role="Usuario">
+              <PropertyRef Name="IdRol" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -499,18 +507,6 @@
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <EntitySetMapping Name="Usuarios">
-            <EntityTypeMapping TypeName="LEscogidoProgramacionNCapasAgosto2023Model.Usuario">
-              <MappingFragment StoreEntitySet="Usuario">
-                <ScalarProperty Name="IdRol" ColumnName="IdRol" />
-                <ScalarProperty Name="FechaNacimiento" ColumnName="FechaNacimiento" />
-                <ScalarProperty Name="ApellidoMaterno" ColumnName="ApellidoMaterno" />
-                <ScalarProperty Name="ApellidoPaterno" ColumnName="ApellidoPaterno" />
-                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
-                <ScalarProperty Name="IdUsuario" ColumnName="IdUsuario" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="Direccions">
             <EntityTypeMapping TypeName="LEscogidoProgramacionNCapasAgosto2023Model.Direccion">
               <MappingFragment StoreEntitySet="Direccion">
@@ -523,7 +519,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <FunctionImportMapping FunctionImportName="UsuarioAdd" FunctionName="LEscogidoProgramacionNCapasAgosto2023Model.Store.UsuarioAdd" />
           <FunctionImportMapping FunctionImportName="UsuarioGetAll" FunctionName="LEscogidoProgramacionNCapasAgosto2023Model.Store.UsuarioGetAll">
             <ResultMapping>
               <ComplexTypeMapping TypeName="LEscogidoProgramacionNCapasAgosto2023Model.UsuarioGetAll_Result">
@@ -537,6 +532,20 @@
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
+          <EntitySetMapping Name="Usuarios">
+            <EntityTypeMapping TypeName="LEscogidoProgramacionNCapasAgosto2023Model.Usuario">
+              <MappingFragment StoreEntitySet="Usuario">
+                <ScalarProperty Name="Imagen" ColumnName="Imagen" />
+                <ScalarProperty Name="IdRol" ColumnName="IdRol" />
+                <ScalarProperty Name="FechaNacimiento" ColumnName="FechaNacimiento" />
+                <ScalarProperty Name="ApellidoMaterno" ColumnName="ApellidoMaterno" />
+                <ScalarProperty Name="ApellidoPaterno" ColumnName="ApellidoPaterno" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="IdUsuario" ColumnName="IdUsuario" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="UsuarioAdd" FunctionName="LEscogidoProgramacionNCapasAgosto2023Model.Store.UsuarioAdd" />
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

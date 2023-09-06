@@ -6,9 +6,19 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Text.RegularExpressions;
+using System.Data.Entity.Core.Objects;
 
 namespace BL
 {
+
+    //Aseguradora
+    //CRUD - Aeguradora
+    //5 metodos EF, MVC, nuevo controlador
+
+    //Ecommerce
+    //Departemento
+    //5 metodos EF, MVC, nuevo controlador
+
     public class Usuario
     {
         public static string Add(ML.Usuario usuario)
@@ -234,11 +244,15 @@ namespace BL
             {
                 using (DLEF.LEscogidoProgramacionNCapasAgosto2023Entities context = new DLEF.LEscogidoProgramacionNCapasAgosto2023Entities())
                 {
-                    var query = context.UsuarioAdd(usuario.Nombre, usuario.ApellidoPaterno, usuario.FechaNacimiento, usuario.Rol.IdRol, usuario.Direccion.Calle, usuario.Direccion.NumeroExterior);
-                    if (query > 0)
+                    ObjectParameter filasAfectadas = new ObjectParameter("FilasAfectadas", typeof(int));
+                    ObjectParameter mensaje = new ObjectParameter("Mensaje", typeof(string));
+                    var query = context.UsuarioAdd(usuario.Nombre, usuario.ApellidoPaterno, usuario.FechaNacimiento, usuario.Rol.IdRol, usuario.Direccion.Calle, usuario.Direccion.NumeroExterior, filasAfectadas,mensaje, usuario.Imagen);
+                    
+
+                    if ((int)filasAfectadas.Value == 2)
+                    //if (query == 2)
                     {
                         result.Correct = true;
-
                     }
                     else
                     {

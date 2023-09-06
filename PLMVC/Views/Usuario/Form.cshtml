@@ -93,8 +93,12 @@
                     @Html.TextBoxFor(model => model.Direccion.NumeroExterior, new { @class = "form-control" })
                 </div>
             </div>
+            <div class="col-md-4">
+                <img id="img" src="https://www.computerhope.com/jargon/g/guest-user.png" width="200" height="200"/>
+                <input id="Imagen" name="Imagen" type="file" class="form-control" onchange="ValidarImagen(), visualizarImagen(this)"/>
+            </div>
         </div>
-        <div class="text-center">
+        <div class="text-center" >
             <button id="btnGuardar" class="btn btn-success" type="submit"><i class="fa-solid fa-floppy-disk"></i> Guardar</button>
             <a id="btnCancelar" onmouseover="CambiarColor()" class="btn btn-danger"  href="@Url.Action("GetAll", "Usuario")"><i class="fa-solid fa-right-from-bracket"></i> Volver</a>
         </div>
@@ -132,5 +136,32 @@
     })
     function CambiarColor() {
         $("#btnCancelar").toggleClass("btn-danger btn-secondary")
+    }
+
+    function ValidarImagen() { 
+        var extensionesPermitidas = ['jpeg', 'jpg', 'png'];                                             
+        var extensionArchivo = document.getElementById('Imagen').value.split('.').pop().toLowerCase();
+        var isValidFile = false; //saber si es valida o no es valida
+        for (var index in extensionesPermitidas) {
+            if (extensionArchivo === extensionesPermitidas[index]) {
+                isValidFile = true;
+                break;
+            }
+        }
+        if (!isValidFile) {
+            alert('Las extensiones permitidas son : *.' + extensionesPermitidas.join(', *.'));
+            $("#Imagen").val("")
+        }
+        return isValidFile;
+
+    }
+    function visualizarImagen(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                $('#img').attr('src', e.target.result);
+            };
+            reader.readAsDataURL(input.files[0]);
+        }
     }
 </script>

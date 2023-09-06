@@ -10,7 +10,7 @@ namespace PLMVC.Controllers
 {
     public class UsuarioController : Controller
     {
-        [HttpGet]//mostrar una vista o al un recurso
+        [HttpGet]
         public ActionResult GetAll()
         {
             ML.Result result = BL.Usuario.GetAllEF();

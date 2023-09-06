@@ -16,7 +16,6 @@
         <thead>
             <tr class="table-secondary">
                 <th>Editar</th>
-                <th>ID Usuario</th>
                 <th>Nombre</th>
                 <th>Apellido Paterno</th>
                 <th>Rol</th>
@@ -28,7 +27,6 @@
             {
                 <tr>
                     <td><a class="btn btn-warning" href="@Url.Action("Form", "Usuario", new {IdUsuario = usuario.IdUsuario})"><i class="fa-solid fa-pencil"></i></a></td>
-                    <td>@usuario.IdUsuario</td>
                     <td>@usuario.Nombre</td>
                     <td>@usuario.ApellidoPaterno</td>
                     @if (usuario.Rol.Nombre == "Admin")
