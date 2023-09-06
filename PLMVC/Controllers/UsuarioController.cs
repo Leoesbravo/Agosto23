@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO.Ports;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.UI.WebControls;
@@ -50,6 +51,11 @@ namespace PLMVC.Controllers
         [HttpPost] 
         public ActionResult Form(ML.Usuario usuario)
         {
+            HttpPostedFileBase file = Request.Files["Imagen"];
+            if (file.ContentLength > 0)
+            {
+                usuario.Imagen = ConvertirABase64(file);
+            }
             if (usuario.IdUsuario == 0) //ADD
             {
                 ML.Result result = BL.Usuario.AddEF(usuario);
@@ -94,6 +100,13 @@ namespace PLMVC.Controllers
         {
             ML.Result result = BL.Estado.GetByIdPais(IdPais);
             return Json(result.Objects, JsonRequestBehavior.AllowGet);
+        }
+        public string ConvertirABase64(HttpPostedFileBase Foto)
+        {          
+            System.IO.BinaryReader reader = new System.IO.BinaryReader(Foto.InputStream);
+            byte[] data = reader.ReadBytes((int)Foto.ContentLength);
+            string imagen = Convert.ToBase64String(data);
+            return imagen;
         }
     }
 }
