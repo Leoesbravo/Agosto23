@@ -246,7 +246,7 @@ namespace BL
                 {
                     ObjectParameter filasAfectadas = new ObjectParameter("FilasAfectadas", typeof(int));
                     ObjectParameter mensaje = new ObjectParameter("Mensaje", typeof(string));
-                    var query = context.UsuarioAdd(usuario.Nombre, usuario.ApellidoPaterno, usuario.FechaNacimiento, usuario.Rol.IdRol, usuario.Direccion.Calle, usuario.Direccion.NumeroExterior, filasAfectadas,mensaje, usuario.Imagen);
+                   // var query = context.UsuarioAdd(usuario.Nombre, usuario.ApellidoPaterno, usuario.FechaNacimiento, usuario.Rol.IdRol, usuario.Direccion.Calle, usuario.Direccion.NumeroExterior, filasAfectadas,mensaje, usuario.Imagen);
                     
 
                     if ((int)filasAfectadas.Value == 2)
@@ -289,6 +289,7 @@ namespace BL
                             usuario.Rol.IdRol = registro.IdRol;
                             usuario.Rol.Nombre = registro.NombreRol;
                             usuario.Imagen = registro.Imagen;
+                            usuario.Status = registro.Status;
                             result.Objects.Add(usuario);
                         }
                         result.Correct = true;
@@ -386,6 +387,34 @@ namespace BL
             }
             return result;
         }
+
+        public static ML.Result ChangeStatus(int IdUsuario ,bool Status)
+        {
+
+            ML.Result result = new ML.Result();
+            try
+            {
+                using (DLEF.LEscogidoProgramacionNCapasAgosto2023Entities context = new DLEF.LEscogidoProgramacionNCapasAgosto2023Entities())
+                {
+                    var rowsAffetted = context.UsuarioChangeStatus(IdUsuario, Status);
+
+                    if (rowsAffetted > 0)
+                    {
+                        result.Correct = true;
+                    }
+                    else
+                    {
+                        result.Correct = false;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                result.ErrorMessage = ex.Message;
+            }
+            return result;
+        }
+
     }
 }
 

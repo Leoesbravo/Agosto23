@@ -106,5 +106,11 @@ namespace PLMVC.Controllers
             string imagen = Convert.ToBase64String(data);
             return imagen;
         }
+
+        public JsonResult ChangeStatus(int IdUsuario, bool Status)
+        {
+            ML.Result result = BL.Usuario.ChangeStatus(IdUsuario, Status);
+            return Json(null);
+        }
     }
 }

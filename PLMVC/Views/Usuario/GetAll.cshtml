@@ -27,6 +27,7 @@
                     <th>Nombre</th>
                     <th>Apellido Paterno</th>
                     <th>Rol</th>
+                    <th>Status</th>
                     <th class="text-center">Eliminar</th>
                 </tr>
             </thead>
@@ -55,8 +56,24 @@
                         {
                             <td style="font-weight: bold; color: #75B5F5"><i class="fa-solid fa-user fa-lg"></i> @usuario.Rol.Nombre</td>
                         }
+                        @if (usuario.Status)
+                        {
+                            <td style="text-align: center; vertical-align: middle;">
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault" checked onchange="ChangeStatus(@usuario.IdUsuario, this)">
+                                </div>
+                            </td>
+                        }
+                        else
+                        {
+                            <td style="text-align: center; vertical-align: middle;">
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault" >
+                                </div>
+                            </td>
+                        }
 
-                        <td class="text-center"><a class="btn btn-danger " href="@Url.Action("Delete", "Usuario" ,new {IdUsuario = usuario.IdUsuario})"><i class="fa-solid fa-trash-can" style="color:white;"></i></a>                           
+                        <td class="text-center"><a class="btn btn-danger " href="@Url.Action("Delete", "Usuario" ,new {IdUsuario = usuario.IdUsuario})"><i class="fa-solid fa-trash-can" style="color:white;"></i></a>
                     </tr>
                 }
             </tbody>
@@ -77,5 +94,23 @@ else
             url: "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json",
         },
     });
+
+    function ChangeStatus(idUsuario, e) {
+        var status = e.checked
+
+        $.ajax({
+            url: '@Url.Action("ChangeStatus")',
+            data: { IdUsuario: idUsuario, Status : status },
+            type: 'POST',
+            dataType : 'json',
+            success: { },
+            error: {
+                //alert('Ocurrio un error')
+            }
+
+        })
+
+        
+    }
 
 </script>

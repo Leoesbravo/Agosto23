@@ -63,7 +63,7 @@ namespace DLEF
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<PaisGetAll_Result>("PaisGetAll");
         }
     
-        public virtual int UsuarioAdd(string nombre, string apellidoPaterno, Nullable<System.DateTime> fechaNacimiento, Nullable<int> idRol, string calle, string numeroExterior, ObjectParameter filasAfectadas, ObjectParameter mensaje, string imagen)
+        public virtual int UsuarioAdd(string nombre, string apellidoPaterno, Nullable<System.DateTime> fechaNacimiento, Nullable<int> idRol, string calle, string numeroExterior, ObjectParameter filasAfectadas, string imagen)
         {
             var nombreParameter = nombre != null ?
                 new ObjectParameter("Nombre", nombre) :
@@ -93,12 +93,25 @@ namespace DLEF
                 new ObjectParameter("Imagen", imagen) :
                 new ObjectParameter("Imagen", typeof(string));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("UsuarioAdd", nombreParameter, apellidoPaternoParameter, fechaNacimientoParameter, idRolParameter, calleParameter, numeroExteriorParameter, filasAfectadas, mensaje, imagenParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("UsuarioAdd", nombreParameter, apellidoPaternoParameter, fechaNacimientoParameter, idRolParameter, calleParameter, numeroExteriorParameter, filasAfectadas, imagenParameter);
         }
     
         public virtual ObjectResult<UsuarioGetAll_Result> UsuarioGetAll()
         {
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<UsuarioGetAll_Result>("UsuarioGetAll");
+        }
+    
+        public virtual int UsuarioChangeStatus(Nullable<int> idUsuario, Nullable<bool> status)
+        {
+            var idUsuarioParameter = idUsuario.HasValue ?
+                new ObjectParameter("IdUsuario", idUsuario) :
+                new ObjectParameter("IdUsuario", typeof(int));
+    
+            var statusParameter = status.HasValue ?
+                new ObjectParameter("Status", status) :
+                new ObjectParameter("Status", typeof(bool));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("UsuarioChangeStatus", idUsuarioParameter, statusParameter);
         }
     }
 }

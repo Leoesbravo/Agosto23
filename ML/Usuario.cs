@@ -14,6 +14,8 @@ namespace ML
         public string ApellidoMaterno{ get; set; }
         public string Imagen{ get; set; }
         public DateTime FechaNacimiento { get; set; }
+
+        public bool Status { get; set; }
         //propiedad de navegacion
         public ML.Rol Rol { get; set; }
         public List<object> Usuarios { get; set; }

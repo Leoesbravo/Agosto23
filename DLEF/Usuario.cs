@@ -24,9 +24,11 @@ namespace DLEF
         public string Nombre { get; set; }
         public string ApellidoPaterno { get; set; }
         public string ApellidoMaterno { get; set; }
-        public System.DateTime FechaNacimiento { get; set; }
+        public Nullable<System.DateTime> FechaNacimiento { get; set; }
         public Nullable<int> IdRol { get; set; }
         public string Imagen { get; set; }
+        public string Direccion { get; set; }
+        public bool Status { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Direccion> Direccions { get; set; }
