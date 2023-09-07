@@ -288,6 +288,7 @@ namespace BL
                             usuario.Rol = new ML.Rol();
                             usuario.Rol.IdRol = registro.IdRol;
                             usuario.Rol.Nombre = registro.NombreRol;
+                            usuario.Imagen = registro.Imagen;
                             result.Objects.Add(usuario);
                         }
                         result.Correct = true;

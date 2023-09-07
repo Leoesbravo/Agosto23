@@ -12,6 +12,7 @@
     @using (Html.BeginForm("Form", "Usuario", FormMethod.Post, new { enctype = "multipart/form-data" }))
     {
         @Html.HiddenFor(model => model.IdUsuario)
+        @Html.HiddenFor(model => model.Imagen)
         <div class="row">
             <div class="col-md-3">
                 @Html.LabelFor(model => model.Nombre)
@@ -34,7 +35,7 @@
                 @Html.LabelFor(model => model.ApellidoMaterno)
                 <div class="input-group mb-3">
                     <span class="input-group-text" id="basic-addon1"><i class="fa-solid fa-user fa-lg"></i></span>
-                    @Html.TextBoxFor(model => model.ApellidoMaterno, new { @class = "form-control"})
+                    @Html.TextBoxFor(model => model.ApellidoMaterno, new { @class = "form-control" })
                 </div>
             </div>
             <div class="col-md-3">
@@ -94,13 +95,13 @@
                 </div>
             </div>
             <div class="col-md-4">
-                <img id="img" src="https://www.computerhope.com/jargon/g/guest-user.png" width="200" height="200"/>
-                <input id="Imagen" name="Imagen" type="file" class="form-control" onchange="ValidarImagen(), visualizarImagen(this)"/>
+                <img id="img" src="https://www.computerhope.com/jargon/g/guest-user.png" width="200" height="200" />
+                <input id="Imagen" name="Imagen" type="file" class="form-control" onchange="ValidarImagen(), visualizarImagen(this)" />
             </div>
         </div>
-        <div class="text-center" >
+        <div class="text-center">
             <button id="btnGuardar" class="btn btn-success" type="submit"><i class="fa-solid fa-floppy-disk"></i> Guardar</button>
-            <a id="btnCancelar" onmouseover="CambiarColor()" class="btn btn-danger"  href="@Url.Action("GetAll", "Usuario")"><i class="fa-solid fa-right-from-bracket"></i> Volver</a>
+            <a id="btnCancelar" onmouseover="CambiarColor()" class="btn btn-danger" href="@Url.Action("GetAll", "Usuario")"><i class="fa-solid fa-right-from-bracket"></i> Volver</a>
         </div>
 
     }

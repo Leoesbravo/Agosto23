@@ -1,11 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IO.Ports;
-using System.Linq;
-using System.Security.Cryptography;
 using System.Web;
 using System.Web.Mvc;
-using System.Web.UI.WebControls;
+
 
 namespace PLMVC.Controllers
 {
@@ -49,6 +45,7 @@ namespace PLMVC.Controllers
             return View(usuario);
         }
         [HttpPost] 
+        //GETDATE()
         public ActionResult Form(ML.Usuario usuario)
         {
             HttpPostedFileBase file = Request.Files["Imagen"];
@@ -102,7 +99,8 @@ namespace PLMVC.Controllers
             return Json(result.Objects, JsonRequestBehavior.AllowGet);
         }
         public string ConvertirABase64(HttpPostedFileBase Foto)
-        {          
+        {   
+            //
             System.IO.BinaryReader reader = new System.IO.BinaryReader(Foto.InputStream);
             byte[] data = reader.ReadBytes((int)Foto.ContentLength);
             string imagen = Convert.ToBase64String(data);

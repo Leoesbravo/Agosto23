@@ -20,5 +20,6 @@ namespace DLEF
         public System.DateTime FechaNacimiento { get; set; }
         public int IdRol { get; set; }
         public string NombreRol { get; set; }
+        public string Imagen { get; set; }
     }
 }
