@@ -48,36 +48,49 @@ namespace PLMVC.Controllers
         //GETDATE()
         public ActionResult Form(ML.Usuario usuario)
         {
-            HttpPostedFileBase file = Request.Files["Imagen"];
-            if (file.ContentLength > 0)
+            if (ModelState.IsValid)
             {
-                usuario.Imagen = ConvertirABase64(file);
+                HttpPostedFileBase file = Request.Files["Imagen"];
+                if (file.ContentLength > 0)
+                {
+                    usuario.Imagen = ConvertirABase64(file);
+                }
+                if (usuario.IdUsuario == 0) //ADD
+                {
+                    ML.Result result = BL.Usuario.AddEF(usuario);
+                    if (result.Correct)
+                    {
+                        ViewBag.Mensaje = "Se ha completado el registro";
+                    }
+                    else
+                    {
+                        ViewBag.Mensaje = "Error" + result.ErrorMessage;
+                    }
+                }
+                else //UPDATE
+                {
+                    ML.Result result = BL.Usuario.AddEF(usuario);
+                    if (result.Correct)
+                    {
+                        ViewBag.Mensaje = "Se ha completado la actulización";
+                    }
+                    else
+                    {
+                        ViewBag.Mensaje = "Error" + result.ErrorMessage;
+                    }
+                }
+                return PartialView("Modal");
             }
-            if (usuario.IdUsuario == 0) //ADD
+            else
             {
-                ML.Result result = BL.Usuario.AddEF(usuario);
-                if (result.Correct)
-                {
-                    ViewBag.Mensaje = "Se ha completado el registro";
-                }
-                else
-                {
-                    ViewBag.Mensaje = "Error" + result.ErrorMessage;
-                }
+                ML.Result resultRol = BL.Rol.GetAll();
+                ML.Result resultPais = BL.Pais.GetAll();
+
+                usuario.Rol.Roles = resultRol.Objects;
+                usuario.Direccion.Estado.Pais.Paises = resultPais.Objects;
+                //usuario.Direccion.Estado.Estados = BL.Estado.GetByIdPais(usuario.Direccion.Estado.Pais.IdPais).Objects;
+                return View(usuario);
             }
-            else //UPDATE
-            {
-                ML.Result result = BL.Usuario.AddEF(usuario);
-                if (result.Correct)
-                {
-                    ViewBag.Mensaje = "Se ha completado la actulización";
-                }
-                else
-                {
-                    ViewBag.Mensaje = "Error" + result.ErrorMessage;   
-                }
-            }
-            return PartialView("Modal");
         }
         public ActionResult Delete(int IdUsuario)
         {
