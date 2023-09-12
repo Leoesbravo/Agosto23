@@ -1,0 +1,58 @@
+﻿@model ML.Usuario
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="~/Content/Styles/Login.css" rel="stylesheet" />
+    @Scripts.Render("~/bundles/jquery")
+    <title>Login</title>
+</head>
+<body>
+    <div class='box'>
+        <div class='box-form'>
+            <div class='box-login-tab'></div>
+            <div class='box-login-title'>
+                <div class='i i-login'></div><h2>LOGIN</h2>
+            </div>
+            <div class='box-login'>
+                @using (Html.BeginForm("Login", "Usuario", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                {
+                    <div class='fieldset-body' id='login_form'>
+                        <button onclick="openLoginInfo();" class='b b-form i i-more' title='Mais Informações'></button>
+                        <p class='field'>
+                            <label for='user'>E-MAIL</label>
+                            <input type='text' id='user' name='email' title='Username' />
+                            <span id='valida' class='i i-warning'></span>
+                        </p>
+                        <p class='field'>
+                            <label for='pass'>PASSWORD</label>
+                            @Html.TextBoxFor(model => model.Password, new { @id = "pass", @title = "Password", @type="password" })
+                            <span id='valida' class='i i-close'></span>
+                        </p>
+
+                        <label class='checkbox'>
+                            <input type='checkbox' value='TRUE' title='Keep me Signed in' /> Keep me Signed in
+                        </label>
+
+                        <input type='submit' id='do_login' value='Iniciar Sesion' title='Get Started' />
+                    </div>
+                }
+                </div>              
+        </div>
+        <div class='box-info'>
+            <p>
+                <button onclick="closeLoginInfo();" class='b b-info i i-left' title='Back to Sign In'></button><h3>Need Help?</h3>
+            </p>
+            <div class='line-wh'></div>
+            <button onclick="" class='b-support' title='Forgot Password?'> Forgot Password?</button>
+            <button onclick="" class='b-support' title='Contact Support'> Contact Support</button>
+            <div class='line-wh'></div>
+            <button onclick="" class='b-cta' title='Sign up now!'> CREATE ACCOUNT</button>
+        </div>
+    </div>
+
+    <script type="text/javascript" src="~/Content/Scripts/Login.js"></script>
+</body>
+</html>

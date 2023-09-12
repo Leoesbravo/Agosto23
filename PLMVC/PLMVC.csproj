@@ -154,6 +154,8 @@
     <Content Include="Content\Images\landpage.jpg" />
     <Content Include="Content\Images\landpage2.jpg" />
     <Content Include="Content\Images\Untitled.jpg" />
+    <Content Include="Content\Scripts\Login.js" />
+    <Content Include="Content\Styles\Login.css" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
@@ -191,6 +193,7 @@
     <Content Include="Views\Usuario\GetAll.cshtml" />
     <Content Include="Views\Usuario\Form.cshtml" />
     <Content Include="Views\Usuario\Modal.cshtml" />
+    <Content Include="Views\Usuario\Login.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

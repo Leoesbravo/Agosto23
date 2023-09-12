@@ -15,10 +15,10 @@
         <AssociationConnector Association="LEscogidoProgramacionNCapasAgosto2023Model.FK__Municipio__IdEst__3D5E1FD2" />
         <EntityTypeShape EntityType="LEscogidoProgramacionNCapasAgosto2023Model.Direccion" Width="1.5" PointX="6.375" PointY="1.75" />
         <AssociationConnector Association="LEscogidoProgramacionNCapasAgosto2023Model.FK__Direccion__IdCol__48CFD27E" />
-        <EntityTypeShape EntityType="LEscogidoProgramacionNCapasAgosto2023Model.Usuario" Width="1.5" PointX="3" PointY="0.75" />
+        <EntityTypeShape EntityType="LEscogidoProgramacionNCapasAgosto2023Model.Usuario" Width="1.5" PointX="3" PointY="8.25" />
         <AssociationConnector Association="LEscogidoProgramacionNCapasAgosto2023Model.FK__Direccion__IdUsu__47DBAE45" />
         <AssociationConnector Association="LEscogidoProgramacionNCapasAgosto2023Model.FK__Usuario__IdRol__286302EC" />
-      </Diagram>
+        </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
 </edmx:Edmx>
