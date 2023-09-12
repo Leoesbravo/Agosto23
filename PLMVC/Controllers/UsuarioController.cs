@@ -119,8 +119,7 @@ namespace PLMVC.Controllers
         [HttpPost]
         public ActionResult Login(string email, string password) 
         {
-            ML.Result result = BL.Usuario.GetByEmail(email);
-           
+            ML.Result result = BL.Usuario.GetByEmail(email);           
             if (result.Correct)
             {
                 //unboxing
