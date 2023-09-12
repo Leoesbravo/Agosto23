@@ -6,7 +6,6 @@
 <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.css" />
 @Scripts.Render("~/bundles/jquery")
 <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.js"></script>
-
 <div class="text-center">
     <h2>Usuarios</h2>
     <h5>Lista de usuarios registrados</h5>
@@ -39,7 +38,7 @@
                         <td class="text-center">
                             @if (usuario.Imagen == "" || usuario.Imagen == null)
                             {
-                                <img src="https://www.computerhope.com/jargon/g/guest-user.png" width="50" height="50" />
+                                <img  src="https://www.computerhope.com/jargon/g/guest-user.png" width="50" height="50" />
                             }
                             else
                             {
@@ -58,7 +57,7 @@
                         }
                         @if (usuario.Status)
                         {
-                            <td style="text-align: center; vertical-align: middle;">
+                            <td  style="text-align: center; vertical-align: middle;">
                                 <div class="form-check form-switch">
                                     <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault" checked onchange="ChangeStatus(@usuario.IdUsuario, this)">
                                 </div>
@@ -68,12 +67,12 @@
                         {
                             <td style="text-align: center; vertical-align: middle;">
                                 <div class="form-check form-switch">
-                                    <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault" >
+                                    <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault" onchange="ChangeStatus(@usuario.IdUsuario, this)" >
                                 </div>
                             </td>
                         }
 
-                        <td class="text-center"><a class="btn btn-danger " href="@Url.Action("Delete", "Usuario" ,new {IdUsuario = usuario.IdUsuario})"><i class="fa-solid fa-trash-can" style="color:white;"></i></a>
+                        <td class="text-center"> <a class="btn btn-danger" href="@Url.Action("Delete", "Usuario" ,new {IdUsuario = usuario.IdUsuario})"><i class="fa-solid fa-trash-can" style="color:white;"></i></a>
                     </tr>
                 }
             </tbody>

@@ -246,8 +246,8 @@ namespace BL
                 {
                     ObjectParameter filasAfectadas = new ObjectParameter("FilasAfectadas", typeof(int));
                     ObjectParameter mensaje = new ObjectParameter("Mensaje", typeof(string));
-                   // var query = context.UsuarioAdd(usuario.Nombre, usuario.ApellidoPaterno, usuario.FechaNacimiento, usuario.Rol.IdRol, usuario.Direccion.Calle, usuario.Direccion.NumeroExterior, filasAfectadas,mensaje, usuario.Imagen);
-                    
+                    //var query = context.UsuarioAdd(usuario.Nombre, usuario.ApellidoPaterno, usuario.FechaNacimiento, usuario.Rol.IdRol, usuario.Direccion.Calle, usuario.Direccion.NumeroExterior, filasAfectadas,mensaje, usuario.Imagen);
+
 
                     if ((int)filasAfectadas.Value == 2)
                     //if (query == 2)
@@ -289,9 +289,41 @@ namespace BL
                             usuario.Rol.IdRol = registro.IdRol;
                             usuario.Rol.Nombre = registro.NombreRol;
                             usuario.Imagen = registro.Imagen;
-                            usuario.Status = registro.Status;
+                            usuario.Status = registro.status.Value;
                             result.Objects.Add(usuario);
                         }
+                        result.Correct = true;
+                    }
+                    else
+                    {
+                        result.Correct = false;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                result.ErrorMessage = ex.Message;
+            }
+            return result;
+        }
+        public static ML.Result GetByEmail(string email)
+        {
+
+            ML.Result result = new ML.Result();
+            try
+            {
+                using (DLEF.LEscogidoProgramacionNCapasAgosto2023Entities context = new DLEF.LEscogidoProgramacionNCapasAgosto2023Entities())
+                {
+                    var query = context.UsuarioGetByEmail(email).FirstOrDefault();
+                    if (query != null)
+                    {
+                        ML.Usuario usuario = new ML.Usuario();
+                        usuario.Email = query.Email;
+                        usuario.Password = query.Password;
+
+                        //boxing
+                        result.Object = usuario;
+
                         result.Correct = true;
                     }
                     else
@@ -388,7 +420,7 @@ namespace BL
             return result;
         }
 
-        public static ML.Result ChangeStatus(int IdUsuario ,bool Status)
+        public static ML.Result ChangeStatus(int IdUsuario, bool Status)
         {
 
             ML.Result result = new ML.Result();

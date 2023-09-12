@@ -15,7 +15,7 @@ namespace PLMVC.Controllers
             usuario.Usuarios = result.Objects;
             return View(usuario);
         }
-        [HttpGet] //MOSTRAR4
+        [HttpGet] 
         public ActionResult Form(int? IdUsuario)
         {
             ML.Usuario usuario = new ML.Usuario();
@@ -45,7 +45,6 @@ namespace PLMVC.Controllers
             return View(usuario);
         }
         [HttpPost] 
-        //GETDATE()
         public ActionResult Form(ML.Usuario usuario)
         {
             HttpPostedFileBase file = Request.Files["Imagen"];
@@ -111,6 +110,39 @@ namespace PLMVC.Controllers
         {
             ML.Result result = BL.Usuario.ChangeStatus(IdUsuario, Status);
             return Json(null);
+        }
+        [HttpGet]
+        public ActionResult Login()
+        {
+            return View();
+        }
+        [HttpPost]
+        public ActionResult Login(string email, string password) 
+        {
+            ML.Result result = BL.Usuario.GetByEmail(email);
+           
+            if (result.Correct)
+            {
+                //unboxing
+                ML.Usuario usuario = (ML.Usuario)result.Object;
+                if (password == usuario.Password)
+                {
+                    return RedirectToAction("Index", "Home");
+                }
+                else
+                {
+                    ViewBag.Login = true;
+                    ViewBag.Mensaje = "Contraseña Incorrecta";
+                    return PartialView("Modal");
+                }
+            }
+            else
+            {
+                //no existe la cuenta
+                ViewBag.Login = true;
+                ViewBag.Mensaje = "No existe la cuenta ingresada";
+                return PartialView("Modal");
+            }
         }
     }
 }

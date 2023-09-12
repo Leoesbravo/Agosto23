@@ -100,6 +100,9 @@
     <Compile Include="UsuarioGetAll_Result.cs">
       <DependentUpon>LEscogidoProgramacionNCapas.tt</DependentUpon>
     </Compile>
+    <Compile Include="UsuarioGetByEmail_Result.cs">
+      <DependentUpon>LEscogidoProgramacionNCapas.tt</DependentUpon>
+    </Compile>
     <Compile Include="UsuarioGetById_Result.cs">
       <DependentUpon>LEscogidoProgramacionNCapas.tt</DependentUpon>
     </Compile>

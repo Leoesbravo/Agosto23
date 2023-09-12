@@ -13,6 +13,8 @@ namespace ML
         public string ApellidoPaterno{ get; set; }
         public string ApellidoMaterno{ get; set; }
         public string Imagen{ get; set; }
+        public string Email{ get; set; }
+        public string Password{ get; set; }
         public DateTime FechaNacimiento { get; set; }
 
         public bool Status { get; set; }

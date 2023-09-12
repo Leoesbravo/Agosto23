@@ -18,7 +18,15 @@
             </div>
             <div class="modal-footer">
                 @*@Html.ActionLink("Regresar", "GetAll", "Materia", htmlAttributes: new { @class = "btn btn-danger" })*@
-                @Html.ActionLink("Vale", "GetAll", "Usuario", htmlAttributes: new { @class = "btn btn-danger" })
+                @if (ViewBag.Login)
+                {
+                    @Html.ActionLink("Vale", "Login", "Usuario", htmlAttributes: new { @class = "btn btn-danger" })
+                }
+                else
+                {
+                    @Html.ActionLink("Vale", "GetAll", "Usuario", htmlAttributes: new { @class = "btn btn-danger" })
+                }
+
 
 
             </div>
