@@ -12,6 +12,17 @@
 </div>
 <hr />
 <div class="row">
+
+    @using (Html.BeginForm("GetAll", "Usuario", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+    <div class="col-md-3">
+        @Html.TextBoxFor(model => model.Nombre, new { @class = "form-control", @placeholder ="Nombre" })
+    </div>
+    <div class="col-md-3">
+        @Html.TextBoxFor(model => model.ApellidoPaterno, new { @class = "form-control",@placeholder ="Apellido"})
+    </div>
+    <button class="btn btn-dark" type="submit">Buscar</button>
+    }
     <div class="col-auto ms-auto">
         <a href="@Url.Action("Form", "Usuario")" class="btn btn-success">Agregar</a>
     </div>

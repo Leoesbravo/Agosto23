@@ -109,11 +109,6 @@ namespace DLEF
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("UsuarioChangeStatus", idUsuarioParameter, statusParameter);
         }
     
-        public virtual ObjectResult<UsuarioGetAll_Result> UsuarioGetAll()
-        {
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<UsuarioGetAll_Result>("UsuarioGetAll");
-        }
-    
         public virtual ObjectResult<UsuarioGetByEmail_Result> UsuarioGetByEmail(string email)
         {
             var emailParameter = email != null ?
@@ -121,6 +116,19 @@ namespace DLEF
                 new ObjectParameter("Email", typeof(string));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<UsuarioGetByEmail_Result>("UsuarioGetByEmail", emailParameter);
+        }
+    
+        public virtual ObjectResult<UsuarioGetAll_Result> UsuarioGetAll(string nombre, string apellido)
+        {
+            var nombreParameter = nombre != null ?
+                new ObjectParameter("Nombre", nombre) :
+                new ObjectParameter("Nombre", typeof(string));
+    
+            var apellidoParameter = apellido != null ?
+                new ObjectParameter("Apellido", apellido) :
+                new ObjectParameter("Apellido", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<UsuarioGetAll_Result>("UsuarioGetAll", nombreParameter, apellidoParameter);
         }
     }
 }

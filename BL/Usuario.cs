@@ -266,7 +266,7 @@ namespace BL
             }
             return result;
         }
-        public static ML.Result GetAllEF()
+        public static ML.Result GetAllEF( ML.Usuario usuario)
         {
 
             ML.Result result = new ML.Result();
@@ -274,23 +274,23 @@ namespace BL
             {
                 using (DLEF.LEscogidoProgramacionNCapasAgosto2023Entities context = new DLEF.LEscogidoProgramacionNCapasAgosto2023Entities())
                 {
-                    var query = context.UsuarioGetAll().ToList();
+                    var query = context.UsuarioGetAll(usuario.Nombre, usuario.ApellidoPaterno).ToList();
                     if (query != null)
                     {
 
                         result.Objects = new List<object>();
                         foreach (var registro in query)
                         {
-                            ML.Usuario usuario = new ML.Usuario();
-                            usuario.IdUsuario = registro.IdUsuario;
-                            usuario.Nombre = registro.Nombre;
-                            usuario.ApellidoPaterno = registro.ApellidoPaterno;
-                            usuario.Rol = new ML.Rol();
-                            usuario.Rol.IdRol = registro.IdRol;
-                            usuario.Rol.Nombre = registro.NombreRol;
-                            usuario.Imagen = registro.Imagen;
-                            usuario.Status = registro.status.Value;
-                            result.Objects.Add(usuario);
+                            ML.Usuario usuarioObj = new ML.Usuario();
+                            usuarioObj.IdUsuario = registro.IdUsuario;
+                            usuarioObj.Nombre = registro.Nombre;
+                            usuarioObj.ApellidoPaterno = registro.ApellidoPaterno;
+                            usuarioObj.Rol = new ML.Rol();
+                            usuarioObj.Rol.IdRol = registro.IdRol;
+                            usuarioObj.Rol.Nombre = registro.NombreRol;
+                            usuarioObj.Imagen = registro.Imagen;
+                            usuarioObj.Status = registro.status.Value;
+                            result.Objects.Add(usuarioObj);
                         }
                         result.Correct = true;
                     }

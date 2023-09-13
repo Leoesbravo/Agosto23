@@ -15,11 +15,11 @@ namespace ML
 
         public string Nombre { get; set; }
         [Required]
-        public string ApellidoPaterno{ get; set; }
-        public string ApellidoMaterno{ get; set; }
-        public string Imagen{ get; set; }
-        public string Email{ get; set; }
-        public string Password{ get; set; }
+        public string ApellidoPaterno { get; set; }
+        public string ApellidoMaterno { get; set; }
+        public string Imagen { get; set; }
+        public string Email { get; set; }
+        public string Password { get; set; }
         [Required]
         [Display(Name = "Fecha de Nacimiento")]
         public DateTime FechaNacimiento { get; set; }
@@ -30,6 +30,3 @@ namespace ML
         public ML.Direccion Direccion { get; set; }
     }
 }
-
-//PL -add, update, delete
-//BL -GetAll, GetById

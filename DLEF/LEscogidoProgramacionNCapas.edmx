@@ -161,7 +161,10 @@
           <Parameter Name="IdUsuario" Type="int" Mode="In" />
           <Parameter Name="Status" Type="bit" Mode="In" />
         </Function>
-        <Function Name="UsuarioGetAll" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="UsuarioGetAll" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Nombre" Type="varchar" Mode="In" />
+          <Parameter Name="Apellido" Type="varchar" Mode="In" />
+        </Function>
         <Function Name="UsuarioGetByEmail" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="Email" Type="varchar" Mode="In" />
         </Function>
@@ -259,7 +262,6 @@
             <Parameter Name="IdUsuario" Mode="In" Type="Int32" />
             <Parameter Name="Status" Mode="In" Type="Boolean" />
           </FunctionImport>
-          <FunctionImport Name="UsuarioGetAll" ReturnType="Collection(LEscogidoProgramacionNCapasAgosto2023Model.UsuarioGetAll_Result)" />
           <EntitySet Name="Usuarios" EntityType="LEscogidoProgramacionNCapasAgosto2023Model.Usuario" />
           <AssociationSet Name="FK__Direccion__IdUsu__47DBAE45" Association="LEscogidoProgramacionNCapasAgosto2023Model.FK__Direccion__IdUsu__47DBAE45">
             <End Role="Usuario" EntitySet="Usuarios" />
@@ -270,7 +272,11 @@
             <End Role="Usuario" EntitySet="Usuarios" />
           </AssociationSet>
           <FunctionImport Name="UsuarioGetByEmail" ReturnType="Collection(LEscogidoProgramacionNCapasAgosto2023Model.UsuarioGetByEmail_Result)">
-            <Parameter Name="Email" Mode="In" Type="String" />
+          <Parameter Name="Email" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="UsuarioGetAll" ReturnType="Collection(LEscogidoProgramacionNCapasAgosto2023Model.UsuarioGetAll_Result)">
+            <Parameter Name="Nombre" Mode="In" Type="String" />
+            <Parameter Name="Apellido" Mode="In" Type="String" />
           </FunctionImport>
         </EntityContainer>
         <ComplexType Name="RolGetAll_Result">
@@ -392,17 +398,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <ComplexType Name="UsuarioGetAll_Result">
-          <Property Type="Int32" Name="IdUsuario" Nullable="false" />
-          <Property Type="String" Name="Nombre" Nullable="false" MaxLength="50" />
-          <Property Type="String" Name="ApellidoPaterno" Nullable="false" MaxLength="50" />
-          <Property Type="String" Name="ApellidoMaterno" Nullable="true" MaxLength="50" />
-          <Property Type="DateTime" Name="FechaNacimiento" Nullable="false" />
-          <Property Type="Int32" Name="IdRol" Nullable="false" />
-          <Property Type="String" Name="NombreRol" Nullable="false" MaxLength="50" />
-          <Property Type="String" Name="Imagen" Nullable="true" />
-          <Property Type="Boolean" Name="status" Nullable="true" />
-        </ComplexType>
         <EntityType Name="Usuario">
           <Key>
             <PropertyRef Name="IdUsuario" />
@@ -447,6 +442,17 @@
         <ComplexType Name="UsuarioGetByEmail_Result">
           <Property Type="String" Name="Email" Nullable="true" MaxLength="50" />
           <Property Type="String" Name="Password" Nullable="true" MaxLength="50" />
+        </ComplexType>
+        <ComplexType Name="UsuarioGetAll_Result">
+          <Property Type="Int32" Name="IdUsuario" Nullable="false" />
+          <Property Type="String" Name="Nombre" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="ApellidoPaterno" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="ApellidoMaterno" Nullable="true" MaxLength="50" />
+          <Property Type="DateTime" Name="FechaNacimiento" Nullable="false" />
+          <Property Type="Int32" Name="IdRol" Nullable="false" />
+          <Property Type="String" Name="NombreRol" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="Imagen" Nullable="true" />
+          <Property Type="Boolean" Name="status" Nullable="true" />
         </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
@@ -535,21 +541,6 @@
           </EntitySetMapping>
           <FunctionImportMapping FunctionImportName="UsuarioAdd" FunctionName="LEscogidoProgramacionNCapasAgosto2023Model.Store.UsuarioAdd" />
           <FunctionImportMapping FunctionImportName="UsuarioChangeStatus" FunctionName="LEscogidoProgramacionNCapasAgosto2023Model.Store.UsuarioChangeStatus" />
-          <FunctionImportMapping FunctionImportName="UsuarioGetAll" FunctionName="LEscogidoProgramacionNCapasAgosto2023Model.Store.UsuarioGetAll">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="LEscogidoProgramacionNCapasAgosto2023Model.UsuarioGetAll_Result">
-                <ScalarProperty Name="IdUsuario" ColumnName="IdUsuario" />
-                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
-                <ScalarProperty Name="ApellidoPaterno" ColumnName="ApellidoPaterno" />
-                <ScalarProperty Name="ApellidoMaterno" ColumnName="ApellidoMaterno" />
-                <ScalarProperty Name="FechaNacimiento" ColumnName="FechaNacimiento" />
-                <ScalarProperty Name="IdRol" ColumnName="IdRol" />
-                <ScalarProperty Name="NombreRol" ColumnName="NombreRol" />
-                <ScalarProperty Name="Imagen" ColumnName="Imagen" />
-                <ScalarProperty Name="status" ColumnName="status" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
           <EntitySetMapping Name="Usuarios">
             <EntityTypeMapping TypeName="LEscogidoProgramacionNCapasAgosto2023Model.Usuario">
               <MappingFragment StoreEntitySet="Usuario">
@@ -571,6 +562,21 @@
               <ComplexTypeMapping TypeName="LEscogidoProgramacionNCapasAgosto2023Model.UsuarioGetByEmail_Result">
                 <ScalarProperty Name="Email" ColumnName="Email" />
                 <ScalarProperty Name="Password" ColumnName="Password" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="UsuarioGetAll" FunctionName="LEscogidoProgramacionNCapasAgosto2023Model.Store.UsuarioGetAll">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="LEscogidoProgramacionNCapasAgosto2023Model.UsuarioGetAll_Result">
+                <ScalarProperty Name="IdUsuario" ColumnName="IdUsuario" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="ApellidoPaterno" ColumnName="ApellidoPaterno" />
+                <ScalarProperty Name="ApellidoMaterno" ColumnName="ApellidoMaterno" />
+                <ScalarProperty Name="FechaNacimiento" ColumnName="FechaNacimiento" />
+                <ScalarProperty Name="IdRol" ColumnName="IdRol" />
+                <ScalarProperty Name="NombreRol" ColumnName="NombreRol" />
+                <ScalarProperty Name="Imagen" ColumnName="Imagen" />
+                <ScalarProperty Name="status" ColumnName="status" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>

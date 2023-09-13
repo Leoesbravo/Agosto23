@@ -10,8 +10,27 @@ namespace PLMVC.Controllers
         [HttpGet]
         public ActionResult GetAll()
         {
-            ML.Result result = BL.Usuario.GetAllEF();
             ML.Usuario usuario = new ML.Usuario();
+            usuario.Nombre = "";
+            usuario.ApellidoPaterno = "";
+            ML.Result result = BL.Usuario.GetAllEF(usuario);         
+            usuario.Usuarios = result.Objects;
+            return View(usuario);
+        }
+        [HttpPost]
+        public ActionResult GetAll(ML.Usuario usuario)
+        {
+            if (usuario.Nombre == null)
+            { 
+                usuario.Nombre = ""; 
+            }
+            if (usuario.ApellidoPaterno == null)
+            {
+                usuario.ApellidoPaterno = "";
+            }
+            
+            ML.Result result = BL.Usuario.GetAllEF(usuario);
+            usuario = new ML.Usuario();
             usuario.Usuarios = result.Objects;
             return View(usuario);
         }
