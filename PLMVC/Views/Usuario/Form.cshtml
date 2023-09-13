@@ -18,18 +18,19 @@
                 @Html.LabelFor(model => model.Nombre)
                 <div class="input-group mb-3">
                     <span class="input-group-text" id="basic-addon1"><i class="fa-solid fa-user fa-lg"></i></span>
-                    @Html.TextBoxFor(model => model.Nombre, new { @class = "form-control" })
+                    @Html.TextBoxFor(model => model.Nombre, new { @class = "form-control", @onkeypress = "return lettersOnly(event, 'lblErrorNombre')" })
                 </div>
                 <label style="color : red;">@Html.ValidationMessageFor(model => model.Nombre)</label>
-
+                <label id="lblErrorNombre"></label>
             </div>
             <div class="col-md-3">
                 @Html.LabelFor(model => model.ApellidoPaterno)
                 <div class="input-group mb-3">
                     <span class="input-group-text" id="basic-addon1"><i class="fa-solid fa-user fa-lg"></i></span>
-                    @Html.TextBoxFor(model => model.ApellidoPaterno, new { @class = "form-control" })
+                    @Html.TextBoxFor(model => model.ApellidoPaterno, new { @class = "form-control", @onkeypress = "return lettersOnly(event, 'lblErrorApellidoPaterno')" })
                 </div>
                 @Html.ValidationMessageFor(model => model.ApellidoPaterno)
+                <label id="lblErrorApellidoPaterno"></label>
 
             </div>
             <div class="col-md-3">
@@ -111,6 +112,36 @@
 </div>
 @Scripts.Render("~/bundles/jquery")
 <script type="text/javascript">
+
+    function lettersOnly(e,lbl) {
+        var charCode = e.keyCode;
+
+        if ((charCode > 64 && charCode < 91) || (charCode > 96 && charCode < 123) || charCode == 8)
+        {
+            $('#' + lbl).text("")
+            return true;
+        }
+        else {
+            $('#' + lbl).text("Solo se aceptan letras")
+            $('#' + lbl).css('color', 'red');
+            return false;
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     $("#ddlPais").change(function () {
         $("#ddlEstado").empty();
         $.ajax({
