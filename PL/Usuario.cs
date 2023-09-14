@@ -77,7 +77,6 @@ namespace PL
                 Console.WriteLine("error" + result.ErrorMessage);
             }
         }
-
         public static void CargaMasivaTxt()
         {
             string file = @"C:\Users\digis\source\repos\Agosto23\PLMVC\Files\CargaMasivaUsuario.txt";

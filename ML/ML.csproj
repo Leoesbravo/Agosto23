@@ -43,6 +43,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Direccion.cs" />
+    <Compile Include="ErrorExcel.cs" />
     <Compile Include="Estado.cs" />
     <Compile Include="Pais.cs" />
     <Compile Include="Result.cs" />
