@@ -10,7 +10,7 @@ namespace PL
     {
         static void Main(string[] args)
         {
-            PL.Usuario.GetAll();
+            PL.Usuario.CargaMasivaTxt();
             Console.ReadKey();
         }
     }

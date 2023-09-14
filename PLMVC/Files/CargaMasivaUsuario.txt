@@ -1,0 +1,6 @@
+Nombre|ApellidoPaterno|Fecha|IdRol|Calle|NumeroExterior
+juan|perez|02/03/1999|1|flores|10
+juan1|perez1|02/03/1999|1|flores|101
+juan2|perez2|03/03/1999|1|flores1|102
+juan3|perez3|04/03/1999|1|flores2|103
+juan4|perez4|05/03/1999|1|flores3|104

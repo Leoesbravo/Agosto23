@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net.NetworkInformation;
 using System.Text;
@@ -22,7 +23,7 @@ namespace PL
             Console.WriteLine("Ingresa la fecha de nacimiento del nuevo usuario");
             usuario.FechaNacimiento = DateTime.Parse(Console.ReadLine());
             Console.WriteLine("Ingresa la direccion del nuevo usuario");
-            usuario.Direccion = Console.ReadLine();
+            //usuario.Direccion = Console.ReadLine();
             Console.WriteLine("Ingrese el rol del nuevo usuario");
             //cuando voy a utilizar la propiedad por primera vez
             usuario.Rol = new ML.Rol();
@@ -39,7 +40,7 @@ namespace PL
         }
         public static void GetAll()
         {
-            ML.Result result = BL.Usuario.GetAllEF();
+            ML.Result result = BL.Usuario.GetAll();
             if(result.Correct == true)
             {
                 foreach (ML.Usuario usuario in result.Objects)
@@ -74,6 +75,30 @@ namespace PL
             else
             {
                 Console.WriteLine("error" + result.ErrorMessage);
+            }
+        }
+
+        public static void CargaMasivaTxt()
+        {
+            string file = @"C:\Users\digis\source\repos\Agosto23\PLMVC\Files\CargaMasivaUsuario.txt";
+
+            if (File.Exists(file))
+            {
+                StreamReader streamReader = new StreamReader(file);
+
+                string line = streamReader.ReadLine(); //SALTAR HEDEARS
+
+                while ( (line = streamReader.ReadLine()) != null)
+                {
+                    string[] row = line.Split('|');
+                    ML.Usuario usuario = new ML.Usuario();
+                    usuario.Nombre = row[0].ToString();
+                    usuario.ApellidoPaterno = row[1];
+
+                    //BL.Usuario.AddEF(usuario);
+
+                }
+
             }
         }
     }
