@@ -487,7 +487,7 @@ namespace BL
 
                         result.Object = tableUsuario;
 
-                        if (tableUsuario.Rows.Count > 1)
+                        if (tableUsuario.Rows.Count > 0)
                         {
                             result.Correct = true;
                         }

@@ -21,25 +21,22 @@ namespace PLMVC.Controllers
         [HttpPost]
         public ActionResult Cargar(ML.Result result) 
         {
-            HttpPostedFileBase file = Request.Files["excel"];
+            HttpPostedFileBase file = Request.Files["Excel"];
             if (file != null)
             {
-                string fileName = Path.GetFileName(file.FileName);//obtener nombre del archivo        
-                string folderPath = ConfigurationManager.AppSettings["RutaCargaMasiva"];
 
                 string extensionArchivo = Path.GetExtension(file.FileName).ToLower(); //obteniendo la extension
                 string extesionValida =  ConfigurationManager.AppSettings["TipoExcel"];       
 
                 if (extensionArchivo == extesionValida)
                 {
-                    string filePath = Path.Combine(folderPath, Path.GetFileNameWithoutExtension(fileName)) + '-' + DateTime.Now.ToString("yyyyMMddHHmmss") + ".xlsx";
+                    string filePath = Server.MapPath("~/CargaMasiva/") + Path.GetFileNameWithoutExtension(file.FileName) + '-' + DateTime.Now.ToString("yyyyMMddHHmmss") + ".xlsx";
 
                     if (!System.IO.File.Exists(filePath))
                     {
-                        using (FileStream stream = new FileStream(filePath, FileMode.Create))
-                        {
-                            file.SaveAs(filePath);
-                        }
+
+                        file.SaveAs(filePath);
+
                         //Session -C#
                         string connectionString = ConfigurationManager.ConnectionStrings["OleDbConnection"] + filePath;
                         ML.Result resultUsuarios = BL.Usuario.LeerExcel(connectionString);
@@ -70,7 +67,7 @@ namespace PLMVC.Controllers
             {
                 ViewBag.Message = "No selecciono ningun archivo, Seleccione uno correctamente";
             }
-            return View();
+            return View(result);
         }
     }
 }

@@ -1,8 +1,10 @@
 ﻿@model ML.Result
 @{
-    ViewBag.Title = "Cargar";
+    ViewData["Title"] = "MateriaCargaMasiva";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+
+
 <div class="container">
     <h1>Carga Masiva de Materias</h1>
     <h5>Seleccione con que tipo de archivo desea hacer la carga</h5>
@@ -11,44 +13,80 @@
     <div class="row">
         <div class="col-md-6">
             <a><input type="submit" value="Excel" class="btn btn-success col-md-12" id="xlsx" /></a>
-            <input type="file" id="excel" style="display: none" />
         </div>
         <div class="col-md-6">
             <a><input type="submit" value="TXT" class="btn btn-primary col-md-12" id="txt" /></a>
         </div>
     </div>
-    @if (Model.Objects.Count > 0)
+    @using (Html.BeginForm("Cargar", "CargaMasiva", FormMethod.Post, new { enctype = "multipart/form-data" }))
     {
-        <table class="table table-dark table-hover table-striped " id="myTable">
-            <thead>
-                <tr class="table-secondary">
-                    <th>Numero Fila</th>
-                    <th>Error</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (ML.ErrorExcel error in Model.Objects)
-                {
-                    <tr>
-                        <td>@error.IdRegistro</td>
-                        <td>@error.Mensaje</td>
-                    </tr>
-                }
-            </tbody>
-        </table>
-    }
-    else
-    {
-
+        <div class="row g-3" id="fuImage" style="display:none;">
+            <div class="col-md-6">
+                <div class="input-group">
+                    <span class="input-group-text" id="basic-addon1"><i class="bi bi-file-earmark-text-fill" style="color: lightseagreen"></i></span>
+                    <input type='file' class="form-control" name="Excel" />
+                </div>
+            </div>
+            @if (!Model.Correct)
+            {
+                <div class="row g-3">
+                    <div class="col-md-1">
+                        <a><input type="submit" value="Procesar" class="btn btn-success" /></a>
+                        <br />
+                    </div>
+                </div>
+            }
+            else
+            {
+                <div class="row g-3">
+                    <div class="col-md-1">
+                        <a><input type="submit" value="Insertar" class="btn btn-success" /></a>
+                        <br />
+                    </div>
+                </div>
+            }
+        </div>
+        <br />
     }
 </div>
 
+<div class="row">
+    <div class="col-md-12">
+        @if (Model.Objects != null)
+        {
+            if (Model.Objects.Count > 0)
+            {
+                <table class="table table-bordered table-responsive">
+                    <thead>
+                        <tr class="text-center">
+                            <td>IdRegistro</td>
+                            <td>Error</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (ML.ErrorExcel error in Model.Objects)
+                        {
+                            <tr class="text-center">
+                                <td>@error.IdRegistro</td>
+                                <td>@error.Mensaje</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+        }
+        else
+        {
+
+        }
+    </div>
+</div>
 @Scripts.Render("~/bundles/jquery")
 <script type="text/javascript">
 
 
     $('#xlsx').click(function () {
-        $('#excel').toggle('slow', function () {
+        $('#fuImage').toggle('slow', function () {
         });
     });
 </script>
