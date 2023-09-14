@@ -246,7 +246,7 @@ namespace BL
                 {
                     ObjectParameter filasAfectadas = new ObjectParameter("FilasAfectadas", typeof(int));
                     ObjectParameter mensaje = new ObjectParameter("Mensaje", typeof(string));
-                    //var query = context.UsuarioAdd(usuario.Nombre, usuario.ApellidoPaterno, usuario.FechaNacimiento, usuario.Rol.IdRol, usuario.Direccion.Calle, usuario.Direccion.NumeroExterior, filasAfectadas,mensaje, usuario.Imagen);
+                    var query = context.UsuarioAdd(usuario.Nombre, usuario.ApellidoPaterno, usuario.FechaNacimiento, usuario.Rol.IdRol, usuario.Direccion.Calle, usuario.Direccion.NumeroExterior, filasAfectadas,mensaje, usuario.Imagen);
 
 
                     if ((int)filasAfectadas.Value == 2)
@@ -446,6 +446,7 @@ namespace BL
             }
             return result;
         }
+
 
     }
 }
