@@ -11,89 +11,96 @@
     <h5>Lista de usuarios registrados</h5>
 </div>
 <hr />
+@using (Html.BeginForm("GetAll", "Usuario", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
 <div class="row">
 
-    @using (Html.BeginForm("GetAll", "Usuario", FormMethod.Post, new { enctype = "multipart/form-data" }))
-    {
+
     <div class="col-md-3">
         @Html.TextBoxFor(model => model.Nombre, new { @class = "form-control", @placeholder ="Nombre" })
     </div>
     <div class="col-md-3">
         @Html.TextBoxFor(model => model.ApellidoPaterno, new { @class = "form-control",@placeholder ="Apellido"})
     </div>
-    <button class="btn btn-dark" type="submit">Buscar</button>
-    }
+    <div class="col-md-3">
+        <button class="btn btn-dark" type="submit"><i class="fa-solid fa-magnifying-glass"></i> Buscar</button>
+    </div>
+
+
     <div class="col-auto ms-auto">
         <a href="@Url.Action("Form", "Usuario")" class="btn btn-success">Agregar</a>
     </div>
+
 </div>
+}
+<br />
 @if (Model.Usuarios.Count > 0)
 {
-        <table class="table table-dark table-hover table-striped " id="myTable">
-            <thead>
-                <tr class="table-secondary">
-                    <th class="text-center">Editar</th>
-                    <th class="text-center">Imagen</th>
-                    <th>Nombre</th>
-                    <th>Apellido Paterno</th>
-                    <th>Rol</th>
-                    <th>Status</th>
-                    <th class="text-center">Eliminar</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (ML.Usuario usuario in Model.Usuarios)
+<table class="table table-dark table-hover table-striped " id="myTable">
+    <thead>
+        <tr class="table-secondary">
+            <th class="text-center">Editar</th>
+            <th class="text-center">Imagen</th>
+            <th>Nombre</th>
+            <th>Apellido Paterno</th>
+            <th>Rol</th>
+            <th>Status</th>
+            <th class="text-center">Eliminar</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (ML.Usuario usuario in Model.Usuarios)
                 {
-                    <tr>
-                        <td class="text-center"><a class="btn btn-warning" href="@Url.Action("Form", "Usuario", new {IdUsuario = usuario.IdUsuario})"><i class="fa-solid fa-pencil"></i></a></td>
-                        <td class="text-center">
-                            @if (usuario.Imagen == "" || usuario.Imagen == null)
+        <tr>
+            <td class="text-center"><a class="btn btn-warning" href="@Url.Action("Form", "Usuario", new {IdUsuario = usuario.IdUsuario})"><i class="fa-solid fa-pencil"></i></a></td>
+            <td class="text-center">
+                @if (usuario.Imagen == "" || usuario.Imagen == null)
                             {
-                                <img  src="https://www.computerhope.com/jargon/g/guest-user.png" width="50" height="50" />
+                <img src="https://www.computerhope.com/jargon/g/guest-user.png" width="50" height="50" />
                             }
                             else
                             {
-                                <img src="data:image/*;base64,@usuario.Imagen" width="50" height="50" />
+                <img src="data:image/*;base64,@usuario.Imagen" width="50" height="50" />
                             }
-                        </td>
-                        <td>@usuario.Nombre</td>
-                        <td>@usuario.ApellidoPaterno</td>
-                        @if (usuario.Rol.Nombre == "Admin")
+            </td>
+            <td>@usuario.Nombre</td>
+            <td>@usuario.ApellidoPaterno</td>
+            @if (usuario.Rol.Nombre == "Admin")
                         {
-                            <td style="font-weight:bold; color: #18D071"><i class="fa-solid fa-user-tie fa-lg"></i> @usuario.Rol.Nombre</td>
+            <td style="font-weight:bold; color: #18D071"><i class="fa-solid fa-user-tie fa-lg"></i> @usuario.Rol.Nombre</td>
                         }
                         else
                         {
-                            <td style="font-weight: bold; color: #75B5F5"><i class="fa-solid fa-user fa-lg"></i> @usuario.Rol.Nombre</td>
+            <td style="font-weight: bold; color: #75B5F5"><i class="fa-solid fa-user fa-lg"></i> @usuario.Rol.Nombre</td>
                         }
-                        @if (usuario.Status)
+            @if (usuario.Status)
                         {
-                            <td  style="text-align: center; vertical-align: middle;">
-                                <div class="form-check form-switch">
-                                    <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault" checked onchange="ChangeStatus(@usuario.IdUsuario, this)">
-                                </div>
-                            </td>
+            <td style="text-align: center; vertical-align: middle;">
+                <div class="form-check form-switch">
+                    <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault" checked onchange="ChangeStatus(@usuario.IdUsuario, this)">
+                </div>
+            </td>
                         }
                         else
                         {
-                            <td style="text-align: center; vertical-align: middle;">
-                                <div class="form-check form-switch">
-                                    <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault" onchange="ChangeStatus(@usuario.IdUsuario, this)" >
-                                </div>
-                            </td>
+            <td style="text-align: center; vertical-align: middle;">
+                <div class="form-check form-switch">
+                    <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault" onchange="ChangeStatus(@usuario.IdUsuario, this)">
+                </div>
+            </td>
                         }
 
-                        <td class="text-center"> <a class="btn btn-danger" href="@Url.Action("Delete", "Usuario" ,new {IdUsuario = usuario.IdUsuario})"><i class="fa-solid fa-trash-can" style="color:white;"></i></a>
-                    </tr>
+            <td class="text-center"> <a class="btn btn-danger" href="@Url.Action("Delete", "Usuario" ,new {IdUsuario = usuario.IdUsuario})"><i class="fa-solid fa-trash-can" style="color:white;"></i></a>
+        </tr>
                 }
-            </tbody>
-        </table>
+    </tbody>
+</table>
 }
 else
 {
-    <div class="alert alert-warning" role="alert">
-        No existen registros en la tabla :(
-    </div>
+<div class="alert alert-warning" role="alert">
+    No existen registros en la tabla :(
+</div>
 }
 <script type="text/javascript">
     let table = new DataTable('#myTable', {
@@ -120,7 +127,7 @@ else
 
         })
 
-        
+
     }
 
 </script>
