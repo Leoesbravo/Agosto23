@@ -22,50 +22,96 @@ namespace PLMVC.Controllers
         public ActionResult Cargar(ML.Result result) 
         {
             HttpPostedFileBase file = Request.Files["Excel"];
-            if (file != null)
+
+            if (Session["pathExcel"] == null)
             {
-
-                string extensionArchivo = Path.GetExtension(file.FileName).ToLower(); //obteniendo la extension
-                string extesionValida =  ConfigurationManager.AppSettings["TipoExcel"];       
-
-                if (extensionArchivo == extesionValida)
+                if (file != null)
                 {
-                    string filePath = Server.MapPath("~/CargaMasiva/") + Path.GetFileNameWithoutExtension(file.FileName) + '-' + DateTime.Now.ToString("yyyyMMddHHmmss") + ".xlsx";
 
-                    if (!System.IO.File.Exists(filePath))
+                    string extensionArchivo = Path.GetExtension(file.FileName).ToLower(); //obteniendo la extension
+                    string extesionValida = ConfigurationManager.AppSettings["TipoExcel"];
+
+                    if (extensionArchivo == extesionValida)
                     {
+                        string rutaproyecto = Server.MapPath("~/CargaMasiva/");
+                        string filePath = rutaproyecto + Path.GetFileNameWithoutExtension(file.FileName) + '-' + DateTime.Now.ToString("yyyyMMddHHmmss") + ".xlsx";
 
-                        file.SaveAs(filePath);
-
-                        //Session -C#
-                        string connectionString = ConfigurationManager.ConnectionStrings["OleDbConnection"] + filePath;
-                        ML.Result resultUsuarios = BL.Usuario.LeerExcel(connectionString);
-
-                        if (resultUsuarios.Correct)
+                        if (!System.IO.File.Exists(filePath))
                         {
-                            ML.Result resultValidacion = BL.Usuario.ValidarExcel(resultUsuarios.Objects);
-                            if (resultValidacion.Objects.Count == 0)
+
+                            file.SaveAs(filePath);
+
+
+
+                            //Session -C#
+
+                            //Objeto    Vive hasta el fin de ejecucion
+                            //SERVIDOR
+                            //Guardar cualquier dato
+
+
+                            string connectionString = ConfigurationManager.ConnectionStrings["OleDbConnection"] + filePath;
+                            ML.Result resultUsuarios = BL.Usuario.LeerExcel(connectionString);
+
+                            if (resultUsuarios.Correct)
                             {
-                               // resultValidacion.Correct = true;
-                               // HttpContext.Session.SetString("PathArchivo", filePath);
-                            }
+                                ML.Result resultValidacion = BL.Usuario.ValidarExcel(resultUsuarios.Objects);
+                                if (resultValidacion.Objects.Count == 0)
+                                {
+                                    resultValidacion.Correct = true;
+                                    Session["pathExcel"] = filePath;
+                                }
 
-                            return View(resultValidacion);
+                                return View(resultValidacion);
+                            }
+                            else
+                            {
+                                ViewBag.Message = "El excel no contiene registros";
+                            }
                         }
-                        else
-                        {
-                            ViewBag.Message = "El excel no contiene registros";
-                        }
+                    }
+                    else
+                    {
+                        ViewBag.Message = "Favor de seleccionar un archivo .xlsx, Verifique su archivo";
                     }
                 }
                 else
                 {
-                    ViewBag.Message = "Favor de seleccionar un archivo .xlsx, Verifique su archivo";
+                    ViewBag.Message = "No selecciono ningun archivo, Seleccione uno correctamente";
                 }
+                return View(result);
             }
             else
             {
-                ViewBag.Message = "No selecciono ningun archivo, Seleccione uno correctamente";
+                string filepath = Session["pathExcel"].ToString();
+
+                if( filepath != null)
+                {
+                    string connectionString = ConfigurationManager.ConnectionStrings["OleDbConnection"] + filepath;
+                    ML.Result resultUsuarios = BL.Usuario.LeerExcel(connectionString);
+
+                    if (resultUsuarios.Correct)
+                    {
+
+                        foreach (ML.Usuario usuario in resultUsuarios.Objects)
+                        {
+                            ML.Result result1 = BL.Usuario.AddEF(usuario);
+                            if (!result1.Correct)
+                            {
+                                    //CREAR UN TXT CON LOS ERRORES 
+                            }
+                            Session["pathExcel"] = null;
+
+                        }
+                    }
+
+                }
+                else
+                {
+
+                }
+
+
             }
             return View(result);
         }
