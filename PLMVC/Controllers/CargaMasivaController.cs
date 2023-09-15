@@ -28,7 +28,7 @@ namespace PLMVC.Controllers
                 if (file != null)
                 {
 
-                    string extensionArchivo = Path.GetExtension(file.FileName).ToLower(); //obteniendo la extension
+                    string extensionArchivo = Path.GetExtension(file.FileName).ToLower();
                     string extesionValida = ConfigurationManager.AppSettings["TipoExcel"];
 
                     if (extensionArchivo == extesionValida)
@@ -40,14 +40,6 @@ namespace PLMVC.Controllers
                         {
 
                             file.SaveAs(filePath);
-
-
-
-                            //Session -C#
-
-                            //Objeto    Vive hasta el fin de ejecucion
-                            //SERVIDOR
-                            //Guardar cualquier dato
 
 
                             string connectionString = ConfigurationManager.ConnectionStrings["OleDbConnection"] + filePath;
