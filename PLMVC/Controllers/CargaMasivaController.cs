@@ -23,12 +23,12 @@ namespace PLMVC.Controllers
         {
             HttpPostedFileBase file = Request.Files["Excel"];
 
-            if (Session["pathExcel"] == null)
+            if (Session["pathExcel"] == null) //si la sesion existe implica que el archivo ya se subio previamente
             {
                 if (file != null)
                 {
 
-                    string extensionArchivo = Path.GetExtension(file.FileName).ToLower(); //obteniendo la extension
+                    string extensionArchivo = Path.GetExtension(file.FileName).ToLower();
                     string extesionValida = ConfigurationManager.AppSettings["TipoExcel"];
 
                     if (extensionArchivo == extesionValida)
@@ -42,24 +42,16 @@ namespace PLMVC.Controllers
                             file.SaveAs(filePath);
 
 
-
-                            //Session -C#
-
-                            //Objeto    Vive hasta el fin de ejecucion
-                            //SERVIDOR
-                            //Guardar cualquier dato
-
-
                             string connectionString = ConfigurationManager.ConnectionStrings["OleDbConnection"] + filePath;
                             ML.Result resultUsuarios = BL.Usuario.LeerExcel(connectionString);
 
                             if (resultUsuarios.Correct)
                             {
                                 ML.Result resultValidacion = BL.Usuario.ValidarExcel(resultUsuarios.Objects);
-                                if (resultValidacion.Objects.Count == 0)
+                                if (resultValidacion.Objects.Count == 0) //que hubo por lo menos un regitro esta incompleto
                                 {
                                     resultValidacion.Correct = true;
-                                    Session["pathExcel"] = filePath;
+                                    Session["pathExcel"] = filePath; //direccion del archivo
                                 }
 
                                 return View(resultValidacion);
@@ -80,10 +72,10 @@ namespace PLMVC.Controllers
                     ViewBag.Message = "No selecciono ningun archivo, Seleccione uno correctamente";
                 }
                 return View(result);
-            }
+            } 
             else
             {
-                string filepath = Session["pathExcel"].ToString();
+                string filepath = Session["pathExcel"].ToString(); //recuperando la informacion de la session
 
                 if( filepath != null)
                 {

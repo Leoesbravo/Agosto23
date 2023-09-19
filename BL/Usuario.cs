@@ -12,14 +12,6 @@ using System.Data.OleDb;
 namespace BL
 {
 
-    //Aseguradora
-    //CRUD - Aeguradora
-    //5 metodos EF, MVC, nuevo controlador
-
-    //Ecommerce
-    //Departemento
-    //5 metodos EF, MVC, nuevo controlador
-
     public class Usuario
     {
         public static string Add(ML.Usuario usuario)
@@ -27,7 +19,6 @@ namespace BL
             string resultado = "";
             try
             {
-                //todo lo que ejecute dentro de un using se libera al final
                 using (SqlConnection context = new SqlConnection(DL.Conexion.GetConnectionString()))
                 {
 
@@ -534,9 +525,9 @@ namespace BL
                         error.Mensaje += "Ingresar el Apellido paterno  ";
                     }
 
-                    if (error.Mensaje != null)
+                    if (error.Mensaje != null) //si tuvo algun error
                     {
-                        result.Objects.Add(error);
+                        result.Objects.Add(error); // agregar a la lista de errores
                     }
 
 

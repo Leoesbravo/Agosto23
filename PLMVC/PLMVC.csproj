@@ -128,6 +128,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\CargaMasivaController.cs" />
+    <Compile Include="Controllers\CatalogoController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\UsuarioController.cs" />
     <Compile Include="Global.asax.cs">
@@ -156,6 +157,7 @@
     <Content Include="Content\Images\landpage2.jpg" />
     <Content Include="Content\Images\Untitled.jpg" />
     <Content Include="Content\Scripts\Login.js" />
+    <Content Include="Content\Styles\Cards.css" />
     <Content Include="Content\Styles\Login.css" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
@@ -196,6 +198,7 @@
     <Content Include="Views\Usuario\Modal.cshtml" />
     <Content Include="Views\Usuario\Login.cshtml" />
     <Content Include="Views\CargaMasiva\Cargar.cshtml" />
+    <Content Include="Views\Catalogo\Catalogo.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
