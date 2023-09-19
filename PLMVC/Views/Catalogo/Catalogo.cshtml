@@ -1,0 +1,39 @@
+﻿@model ML.Usuario
+@{
+    ViewBag.Title = "Catalogo";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link href="~/Content/Styles/Cards.css" rel="stylesheet" />
+
+<div class="row">
+    @foreach (ML.Usuario usuario in Model.Usuarios)
+    {
+        <div class="col-md-3 col-sm-6">
+            <div class="product-grid">
+                <div class="product-image">
+                    <a href="#" class="image">
+                        <img class="pic-1" src="data:image/*;base64,@usuario.Imagen">
+                        <img class="pic-2" src="images/img-2.jpg">
+                    </a>
+                    <ul class="product-links">
+                        <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
+                        <li><a href="#"><i class="far fa-heart"></i></a></li>
+                    </ul>
+                </div>
+                <div class="product-content">
+                    <ul class="rating">
+                        <li class="fa fa-star"></li>
+                        <li class="fa fa-star"></li>
+                        <li class="fa fa-star"></li>
+                        <li class="fa fa-star"></li>
+                        <li class="far fa-star"></li>
+                    </ul>
+                    <h3 class="title"><a href="#">@usuario.Nombre</a></h3>
+                    <div class="price">@usuario.Email</div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+

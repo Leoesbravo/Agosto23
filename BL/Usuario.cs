@@ -525,9 +525,9 @@ namespace BL
                         error.Mensaje += "Ingresar el Apellido paterno  ";
                     }
 
-                    if (error.Mensaje != null)
+                    if (error.Mensaje != null) //si tuvo algun error
                     {
-                        result.Objects.Add(error);
+                        result.Objects.Add(error); // agregar a la lista de errores
                     }
 
 
