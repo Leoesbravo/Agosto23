@@ -16,5 +16,7 @@ namespace SLWCF
         void DoWork();
         [OperationContract]
         int Sumar(int a, int b);
+        [OperationContract]
+        int Restar(int a, int b);
     }
 }

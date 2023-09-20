@@ -16,6 +16,12 @@ namespace SLWCF
         public void DoWork()
         {
         }
+
+        public int Restar(int a, int b)
+        {
+            return a - b;
+        }
+
         public int Sumar(int a, int b)
         {
             return a + b;
