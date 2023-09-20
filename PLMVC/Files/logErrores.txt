@@ -1,0 +1,2 @@
+Ocurrio un error al insertar el usuario con correo: Robertoel error fueObject reference not set to an instance of an object.
+Ocurrio un error al insertar el usuario con correo: Roberto1el error fueObject reference not set to an instance of an object.

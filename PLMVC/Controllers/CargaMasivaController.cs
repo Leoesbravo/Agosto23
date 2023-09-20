@@ -84,16 +84,29 @@ namespace PLMVC.Controllers
 
                     if (resultUsuarios.Correct)
                     {
-
+                        ML.Result resultErrores = new ML.Result();
+                        resultErrores.Objects = new List<object>();
                         foreach (ML.Usuario usuario in resultUsuarios.Objects)
                         {
                             ML.Result result1 = BL.Usuario.AddEF(usuario);
                             if (!result1.Correct)
                             {
-                                    //CREAR UN TXT CON LOS ERRORES 
+                                string error = "Ocurrio un error al insertar el usuario con correo: " + usuario.Nombre + "el error fue" + result1.ErrorMessage;
+                                resultErrores.Objects.Add(error);
+                                
                             }
                             Session["pathExcel"] = null;
-
+                        }
+                        if(resultErrores.Objects.Count > 0)  
+                        {
+                            string pathTxt = Server.MapPath(@"~\Files\logErrores.txt");
+                            using(StreamWriter writter = new StreamWriter(pathTxt))
+                            {
+                                foreach (string linea in resultErrores.Objects)
+                                {
+                                    writter.WriteLine(linea);
+                                }
+                            }
                         }
                     }
 
