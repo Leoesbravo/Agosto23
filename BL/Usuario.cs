@@ -231,6 +231,8 @@ namespace BL
         }
         public static ML.Result AddEF(ML.Usuario usuario)
         {
+            //Modificacion jose
+            var x = 0;
             ML.Result result = new ML.Result();
             try
             {
