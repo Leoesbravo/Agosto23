@@ -11,6 +11,7 @@ namespace SLWCF
      [ServiceContract]// que la interfaz es parte de un servicio WCF
     public interface IServiceOperaciones
     {
+
         [OperationContract] //el metodo es parte del servicio WCF
         void DoWork();
         [OperationContract]

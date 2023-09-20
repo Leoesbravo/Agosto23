@@ -234,6 +234,7 @@ namespace BL
             ML.Result result = new ML.Result();
             try
             {
+                //modificacion de prueba
                 using (DLEF.LEscogidoProgramacionNCapasAgosto2023Entities context = new DLEF.LEscogidoProgramacionNCapasAgosto2023Entities())
                 {
                     ObjectParameter filasAfectadas = new ObjectParameter("FilasAfectadas", typeof(int));
