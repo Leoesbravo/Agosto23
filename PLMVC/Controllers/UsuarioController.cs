@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 
@@ -8,33 +9,48 @@ namespace PLMVC.Controllers
     public class UsuarioController : Controller
     {
         [HttpGet]
+        //public ActionResult GetAll()
+        //{
+        //    ML.Usuario usuario = new ML.Usuario();
+        //    usuario.Nombre = "";
+        //    usuario.ApellidoPaterno = "";
+        //    ML.Result result = BL.Usuario.GetAllEF(usuario);         
+        //    usuario.Usuarios = result.Objects;
+        //    return View(usuario);
+        //}
         public ActionResult GetAll()
         {
             ML.Usuario usuario = new ML.Usuario();
             usuario.Nombre = "";
             usuario.ApellidoPaterno = "";
-            ML.Result result = BL.Usuario.GetAllEF(usuario);         
-            usuario.Usuarios = result.Objects;
+            ServiceReferenceUser.UsuarioServiceClient usuarioWCF = new ServiceReferenceUser.UsuarioServiceClient();
+            //lamando al servicio
+            var result = usuarioWCF.GetAll(usuario);
+            
+            if (result.Correct)
+            {
+                usuario.Usuarios = result.Objects.ToList();
+            }
             return View(usuario);
         }
         [HttpPost]
         public ActionResult GetAll(ML.Usuario usuario)
         {
             if (usuario.Nombre == null)
-            { 
-                usuario.Nombre = ""; 
+            {
+                usuario.Nombre = "";
             }
             if (usuario.ApellidoPaterno == null)
             {
                 usuario.ApellidoPaterno = "";
             }
-            
+
             ML.Result result = BL.Usuario.GetAllEF(usuario);
             usuario = new ML.Usuario();
             usuario.Usuarios = result.Objects;
             return View(usuario);
         }
-        [HttpGet] 
+        [HttpGet]
         public ActionResult Form(int? IdUsuario)
         {
             ML.Usuario usuario = new ML.Usuario();
@@ -53,7 +69,7 @@ namespace PLMVC.Controllers
                 if (result.Correct)
                 {
                     usuario = (ML.Usuario)result.Object;
-                   
+
                 }
             }
             else //Add
@@ -63,7 +79,7 @@ namespace PLMVC.Controllers
             }
             return View(usuario);
         }
-        [HttpPost] 
+        [HttpPost]
         public ActionResult Form(ML.Usuario usuario)
         {
             if (ModelState.IsValid)
@@ -73,9 +89,13 @@ namespace PLMVC.Controllers
                 {
                     usuario.Imagen = ConvertirABase64(file);
                 }
-                if (usuario.IdUsuario == 0) //ADD
+                if (usuario.IdUsuario == 0 || usuario.IdUsuario == null) //ADD
                 {
-                    ML.Result result = BL.Usuario.AddEF(usuario);
+                    //WCF
+                    ServiceReferenceUser.UsuarioServiceClient usuarioWCF = new ServiceReferenceUser.UsuarioServiceClient();
+                    //WCF
+                    var result = usuarioWCF.Add(usuario);
+                    
                     if (result.Correct)
                     {
                         ViewBag.Mensaje = "Se ha completado el registro";
@@ -113,15 +133,15 @@ namespace PLMVC.Controllers
         public ActionResult Delete(int IdUsuario)
         {
             ML.Usuario usuario = new ML.Usuario();
-                ML.Result result = BL.Usuario.AddEF(usuario);
-                if (result.Correct)
-                {
-                    ViewBag.Mensaje = "Se ha completado el borrar";
-                }
-                else
-                {
-                    ViewBag.Mensaje = "Error" + result.ErrorMessage;
-                }
+            ML.Result result = BL.Usuario.AddEF(usuario);
+            if (result.Correct)
+            {
+                ViewBag.Mensaje = "Se ha completado el borrar";
+            }
+            else
+            {
+                ViewBag.Mensaje = "Error" + result.ErrorMessage;
+            }
             return PartialView("Modal");
         }
         public JsonResult EstadoGetByIdPais(int IdPais)
@@ -130,7 +150,7 @@ namespace PLMVC.Controllers
             return Json(result.Objects, JsonRequestBehavior.AllowGet);
         }
         public string ConvertirABase64(HttpPostedFileBase Foto)
-        {   
+        {
             //
             System.IO.BinaryReader reader = new System.IO.BinaryReader(Foto.InputStream);
             byte[] data = reader.ReadBytes((int)Foto.ContentLength);
@@ -149,9 +169,9 @@ namespace PLMVC.Controllers
             return View();
         }
         [HttpPost]
-        public ActionResult Login(string email, string password) 
+        public ActionResult Login(string email, string password)
         {
-            ML.Result result = BL.Usuario.GetByEmail(email);           
+            ML.Result result = BL.Usuario.GetByEmail(email);
             if (result.Correct)
             {
                 //unboxing
@@ -177,3 +197,15 @@ namespace PLMVC.Controllers
         }
     }
 }
+
+
+//REST 
+//diferencias con SOAP
+//como sea crea un servicio rest en .NET
+//estructura de un archivo JSON
+//Codigos de estado HTTP
+    //100 
+    //200 
+    //300
+    //400 
+    //500

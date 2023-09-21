@@ -74,11 +74,13 @@
     <Content Include="Service1.svc" />
     <Content Include="ServiceOperaciones.svc" />
     <Content Include="ServiceUsuario.svc" />
+    <Content Include="UsuarioService.svc" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="IServiceOperaciones.cs" />
     <Compile Include="IServiceUsuario.cs" />
+    <Compile Include="IUsuarioService.cs" />
     <Compile Include="Result.cs" />
     <Compile Include="Service1.svc.cs">
       <DependentUpon>Service1.svc</DependentUpon>
@@ -90,6 +92,9 @@
     </Compile>
     <Compile Include="ServiceUsuario.svc.cs">
       <DependentUpon>ServiceUsuario.svc</DependentUpon>
+    </Compile>
+    <Compile Include="UsuarioService.svc.cs">
+      <DependentUpon>UsuarioService.svc</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
