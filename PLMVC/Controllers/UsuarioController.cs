@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
+using System.Net.Http;
 using System.Web;
 using System.Web.Mvc;
 
@@ -8,7 +11,6 @@ namespace PLMVC.Controllers
 {
     public class UsuarioController : Controller
     {
-        [HttpGet]
         //public ActionResult GetAll()
         //{
         //    ML.Usuario usuario = new ML.Usuario();
@@ -18,18 +20,51 @@ namespace PLMVC.Controllers
         //    usuario.Usuarios = result.Objects;
         //    return View(usuario);
         //}
+        //public ActionResult GetAll()
+        //{
+        //    ML.Usuario usuario = new ML.Usuario();
+        //    usuario.Nombre = "";
+        //    usuario.ApellidoPaterno = "";
+        //    ServiceReferenceUser.UsuarioServiceClient usuarioWCF = new ServiceReferenceUser.UsuarioServiceClient();
+        //    //lamando al servicio
+        //    var result = usuarioWCF.GetAll(usuario);
+
+        //    if (result.Correct)
+        //    {
+        //        usuario.Usuarios = result.Objects.ToList();
+        //    }
+        //    return View(usuario);
+        //}
+        [HttpGet]
         public ActionResult GetAll()
         {
             ML.Usuario usuario = new ML.Usuario();
+            usuario.Usuarios = new List<object>();
             usuario.Nombre = "";
             usuario.ApellidoPaterno = "";
-            ServiceReferenceUser.UsuarioServiceClient usuarioWCF = new ServiceReferenceUser.UsuarioServiceClient();
             //lamando al servicio
-            var result = usuarioWCF.GetAll(usuario);
-            
-            if (result.Correct)
+            ML.Result result = new ML.Result();
+
+            using (var client = new HttpClient())
             {
-                usuario.Usuarios = result.Objects.ToList();
+                client.BaseAddress = new Uri(ConfigurationManager.AppSettings["WebApi"]+ "usuario");
+
+                var responseTask = client.GetAsync(client.BaseAddress + "/"+usuario.Nombre + "/" + usuario.ApellidoPaterno);
+                responseTask.Wait();
+
+                var resultServicio = responseTask.Result;
+
+                if (resultServicio.IsSuccessStatusCode)
+                {
+                    var readTask = resultServicio.Content.ReadAsAsync<ML.Result>();
+                    readTask.Wait();
+
+                    foreach (var resultUsuario in readTask.Result.Objects)
+                    {
+                        ML.Usuario resultItemList = Newtonsoft.Json.JsonConvert.DeserializeObject<ML.Usuario>(resultUsuario.ToString());
+                        usuario.Usuarios.Add(resultItemList);
+                    }
+                }
             }
             return View(usuario);
         }
@@ -95,7 +130,7 @@ namespace PLMVC.Controllers
                     ServiceReferenceUser.UsuarioServiceClient usuarioWCF = new ServiceReferenceUser.UsuarioServiceClient();
                     //WCF
                     var result = usuarioWCF.Add(usuario);
-                    
+
                     if (result.Correct)
                     {
                         ViewBag.Mensaje = "Se ha completado el registro";
@@ -193,6 +228,7 @@ namespace PLMVC.Controllers
                 ViewBag.Login = true;
                 ViewBag.Mensaje = "No existe la cuenta ingresada";
                 return PartialView("Modal");
+
             }
         }
     }
@@ -204,8 +240,8 @@ namespace PLMVC.Controllers
 //como sea crea un servicio rest en .NET
 //estructura de un archivo JSON
 //Codigos de estado HTTP
-    //100 
-    //200 
-    //300
-    //400 
-    //500
+//100 
+//200 
+//300
+//400 
+//500

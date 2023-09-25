@@ -11,6 +11,24 @@ namespace SLWebApi.Controllers
     [RoutePrefix("api/usuario")]
     public class UsuarioController : ApiController
     {
+        [Route("{nombre}/{apellidopaterno}")]
+        [HttpGet]
+        public IHttpActionResult GetAll(string nombre, string apellidopaterno)
+        {
+            ML.Usuario usuario = new ML.Usuario();
+            usuario.Nombre = nombre;
+            usuario.ApellidoPaterno = apellidopaterno;
+            
+            ML.Result result = BL.Usuario.GetAllEF(usuario);
+            if (result.Correct)
+            {
+                return Ok(result);
+            }
+            else
+            {
+                return Content(HttpStatusCode.BadRequest, result);
+            }
+        }
         [Route("")]
         [HttpPost]
         public IHttpActionResult Add(ML.Usuario usuario)
@@ -18,7 +36,7 @@ namespace SLWebApi.Controllers
             ML.Result result = BL.Usuario.AddEF(usuario);
             if (result.Correct)
             {
-                return Content(HttpStatusCode.OK, result);
+                return Ok(result);
             }
             else
             {
@@ -26,7 +44,7 @@ namespace SLWebApi.Controllers
             }
         }
 
-        [Route("/{idUsuario}")]
+        [Route("{idUsuario}")]
         [HttpDelete]
         public IHttpActionResult Delete(int idUsuario)
         {
@@ -41,7 +59,7 @@ namespace SLWebApi.Controllers
             }
         }
 
-        [Route("/{idUsuario}")]
+        [Route("{idUsuario}")]
         [HttpPut]
         //Diferencia entre URL y URI
         //Investigar metodos Asincronos y sincronos
