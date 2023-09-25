@@ -47,9 +47,8 @@ namespace PLMVC.Controllers
 
             using (var client = new HttpClient())
             {
-                client.BaseAddress = new Uri(ConfigurationManager.AppSettings["WebApi"]+ "usuario");
-
-                var responseTask = client.GetAsync(client.BaseAddress + "/"+usuario.Nombre + "/" + usuario.ApellidoPaterno);
+                client.BaseAddress = new Uri(ConfigurationManager.AppSettings["WebApi"]);
+                var responseTask = client.GetAsync($"usuario?nombre=&apellidopaterno=");
                 responseTask.Wait();
 
                 var resultServicio = responseTask.Result;
@@ -100,12 +99,26 @@ namespace PLMVC.Controllers
 
             if (IdUsuario != null) //UPdate
             {
-                ML.Result result = BL.Usuario.GetByIdEF(IdUsuario.Value);
-                if (result.Correct)
+                using (var client = new HttpClient())
                 {
-                    usuario = (ML.Usuario)result.Object;
+                    client.BaseAddress = new Uri(ConfigurationManager.AppSettings["WebApi"]);
+                    var responseTask = client.GetAsync("usuario/" + IdUsuario);
+                    responseTask.Wait();
 
+                    var resultServicio = responseTask.Result;
+
+                    if (resultServicio.IsSuccessStatusCode)
+                    {
+                        var readTask = resultServicio.Content.ReadAsAsync<ML.Result>();
+                        readTask.Wait();
+
+                        ML.Usuario resultItemList = Newtonsoft.Json.JsonConvert.DeserializeObject<ML.Usuario>(readTask.Result.Object.ToString());
+                        usuario = resultItemList;
+                    }
+                    usuario.Direccion.Estado.Pais.Paises = resultPais.Objects; 
+                    usuario.Rol.Roles = resultRol.Objects;
                 }
+                return View(usuario);
             }
             else //Add
             {
